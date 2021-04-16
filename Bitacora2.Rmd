@@ -1,0 +1,22 @@
+---
+title: "Bitacora2"
+author: 
+  - Sebastián Rojas Vargas
+  - Francisco Soto Quesada
+  - Jairo Pacheco Campos
+  - Jason Barrantes Rodríguez
+date: "17/4/2021"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Inicio:** 
+
+**Cierre:** 
+
+# Acuerdos
+
+- 

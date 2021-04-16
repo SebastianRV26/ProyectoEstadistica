@@ -42,9 +42,7 @@ A continuación se presenta una tabla con los principales aspectos de el dataset
 
 ## IC de un promedio usando distribución Z
 
-A continuacion se presentan los Promedios usando distribución normal estandar de una población de datos sacados del dataset diamantes
-
-Para este ejemplo se utilizaran las siguientes muestras de la variable precio del dataset de diamantes:
+A continuacion se presentan los Promedios usando distribución normal estandar de una población de datos sacados del dataset diamantes, utilizando la siguiente muestra de la variable precio del dataset de diamantes:
 
 ```{r include=FALSE}
 # Se toman filas random para sacar del dataset
@@ -78,7 +76,7 @@ En donde:
 
 * **x:** la muestra
 * **sigma:** desviación estandar de la muestra
-* **alpha:** valor de alpha
+* **alpha:** nivel de confidencia
 
 Y ahora se calcula el intervalo para un IC del 95%:
 
@@ -89,11 +87,7 @@ IC <- ICZ(muestra.precios, de1, alpha1)
 
 ]`r IC`[
 
-Del cual se podría concluir que existe la posibilidad de que:
-
-* Como la media `r mean(muestra.precios)` se encuentra en el intervalo, es válido.
-* B
-* C
+Del cual se puede concluir que como la media de precios de todo el dataset de diamantes `r mean(as.data.frame(diamantes)$precio)` se encuentra en el intervalo, todo está correcto.
 
 ## IC de un promedio usando distribución t
 A continuacion se presentan los Promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
@@ -142,11 +136,7 @@ IC <- t.test(x=muestra.precios, conf.level = 0.95)$conf.int
 
 ]`r IC`[
 
-Del cual se podría concluir que existe la posibilidad de que:
-
-* A
-* B
-* C
+Del cual se puede concluir que como la media de precios de todo el dataset de diamantes `r mean(as.data.frame(diamantes)$precio)` se encuentra en el intervalo, todo está correcto.
 
 ## IC de una proporción
 
