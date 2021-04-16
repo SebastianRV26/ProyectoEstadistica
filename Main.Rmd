@@ -53,45 +53,45 @@ filas.random <- sample(1:53940, 100, replace = T)
 
 # Se generan datasets nuevos con las filas random anteriores 
 muestra1 <- as.data.frame(diamantes[filas.random,])
+muestra.precios <- muestra1$precio
 
-n1 <- length(muestra1$precio)
-mu1 <- mean(muestra1$precio)
-var1 <- var(muestra1$precio)
+n1 <- length(muestra.precios)
+mu1 <- mean(muestra.precios)
+de1 <- sqrt(var(muestra.precios))
 alpha1 <- 0.05
+
 ```
 
-| Muestra| Tamaño| Promedio| Varianza|
+| Muestra| Tamaño| Promedio| Desviación estantar|
 |:--|:--|:--|:--|
-| A| `r n1`| `r mu1`| `r var1`|
+| A| `r n1`| `r mu1`| `r de1`|
 
-Dado que ambas muestras son mayores a 30 se puede asumir que la población siguen una distribución normal y que se puede aproximar σ₁ mediante s₁
-
-Ya sabiendo estos datos se puede aproximar el IC utilizando estimación por intervalo, para esto se implementa la función manual:
+Dado que la muestra es mayor a 30 se puede asumir que la población siguen una distribución normal y que se puede aproximar σ₁ mediante s₁. Conociento los datos se puede aproximar el IC utilizando estimación por intervalo, para esto se implementa la siguente función manual:
 
 ```{r}
 ICZ <- function(x, sigma, alpha){
-  c(mean(x) - qnorm(1-alpha/2)*sigma/sqrt(length(x)), 
-  mean(x) + qnorm(1-alpha/2)*sigma/sqrt(length(x)))}
+  c(mean(x) + qnorm(alpha/2)*sigma/sqrt(length(x)), 
+  mean(x) - qnorm(alpha/2)*sigma/sqrt(length(x)))}
 
 ```
 En donde:
 
-* **mu1:** media de la muestra
-* **n1:** tamaño de la muestra
-* **var1:** varianza de la muestra
+* **x:** la muestra
+* **sigma:** desviación estandar de la muestra
 * **alpha:** valor de alpha
 
 Y ahora se calcula el intervalo para un IC del 95%:
 
-```{r}
-IC <- ICZ(n1, sqrt(var1), alpha1)
+```{r include=FALSE}
+IC <- ICZ(muestra.precios, de1, alpha1)
+
 ```
 
 ]`r IC`[
 
 Del cual se podría concluir que existe la posibilidad de que:
 
-* A
+* Como la media `r mean(muestra.precios)` se encuentra en el intervalo, es válido.
 * B
 * C
 
@@ -101,15 +101,21 @@ A continuacion se presentan los Promedios usando distribución t de una poblaci�
 ```{r include=FALSE}
 ## Se toman filas random para sacar del dataset
 set.seed(6894)
-filas.random <- sample(1:53940, 20, replace= F)
+filas.random <- sample(1:53940, 20, replace= T)
 
 ## Se generan datasets nuevos con las filas random anteriores 
 muestra1 <- as.data.frame(diamantes[filas.random,])
+muestra.precios <- muestra1$precio
+n1 <- length(muestra.precios)
+mu1 <- mean(muestra.precios)
+de1 <- sqrt(var(muestra.precios))
+alpha1 <- 0.05
+
 ```
 
-| Muestra| Tamaño| Promedio| Varianza|
+| Muestra| Tamaño| Promedio| Desviación estantar|
 |:--|:--|:--|:--|
-| A| `r length(muestra1$precio)`| `r mean(muestra1$precio)`| `r var(muestra1$precio)`|
+| A| `r n1`| `r mu1`| `r de1`|
 
 En este caso dado que el tamaño de la muestra es menor a 30 se ha optado por realizar una inspección visual de los datos para ver si se asemeja a una distribución normal
 
@@ -119,23 +125,19 @@ ggdensity(muestra1$profundidad,
           xlab = "Precio de los diamantes")
 ```
 
-Como se puede observar, la muestra tiene forma de campana, por lo que se puede asumir que sigue una distribución normal. Sin embargo, como las muestras son pequeñas no se pueden utilizar s₁ para realizar una aproximación σ₁, por lo cual el caso 3 sería el óptimo en esta situación.
+Como se puede observar, la muestra tiene forma de campana, por lo que se puede asumir que sigue una distribución normal. Conociendo esto se puede aproximar el IC mediante la funcion t.test, la cual tiene la siguiente estructura:
 
-Conociendo esto se puede aproximar el IC mediante la funcion t.test, la cual tiene la siguiente estructura:
-
-t.test(x=muestra1$profundidad, y=muestra2$profundidad, conf.level = 0.95, var.equal = TRUE)
+t.test(x=muestra.precios, conf.level = 0.95)$conf.int
 
 Donde:
 
-* **x:** primera muestra
-* **y:** segunda muestra
+* **x:** muestra
 * **conf.level:** nivel de confidencia
-* **var.equal:** si la varianzas se asumen iguales
 
-Y ahora se calcula la diferencia de promedios para un IC del 95%
+Y ahora se calcula el intervalo para un IC del 95%:
 
 ```{r include=FALSE}
-IC <- t.test(x=muestra1$profundidad, y=NULL, conf.level = 0.95, var.equal = TRUE)$conf.int
+IC <- t.test(x=muestra.precios, conf.level = 0.95)$conf.int
 ```
 
 ]`r IC`[
