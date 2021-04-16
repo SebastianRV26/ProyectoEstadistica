@@ -1,6 +1,10 @@
 ---
-title: "Bitacora1"
-author: "Sebastian Rojas Vargas"
+title: "Bitacora 1"
+author: 
+  - Sebastián Rojas Vargas
+  - Francisco Soto Quesada
+  - Jairo Pacheco Campos
+  - Jason Barrantes Rodríguez
 date: "11/4/2021"
 output: word_document
 ---
@@ -9,22 +13,29 @@ output: word_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+**Inicio:** 2:00 pm 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+**Cierre:** 3:20 pm
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Acuerdos
 
-```{r cars}
-summary(cars)
-```
+-	Se escogió la base datos de diamantes, paquete ggplot2.
+-	Son 8 IC a calcular, repartirlos en dos para cada uno.
+-	Creación de un repositorio en github para almacenar el proyecto de R y llevar un mejor control del mismo.
+-	Se escogieron las variables: precio, corte, profundidad y quilates.
 
-## Including Plots
+# Distribución de tareas:
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+| Tareas| Responsable|
+|:--|:--|
+|Promedio usando distribución z | Sebastian Rojas Vargas|
+|Promedio usando distribución t	| Sebastian Rojas Vargas|
+|Proporción	| Jason Barrantes Rodriguez|
+|Varianza	| Jairo Pacheco Campos|
+|Diferencia de promedios usando distribución z | Francisco Soto Quesada|
+|Diferencia de promedios usando distribución t | Francisco Soto Quesada|
+|Diferencia de proporciones	| Jason Barrantes Rodriguez|
+|Cociente de varianzas | Jairo Pacheco Campos|
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
