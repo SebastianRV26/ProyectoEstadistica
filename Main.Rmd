@@ -283,16 +283,16 @@ poblacion2 <- as.data.frame(diamantes[filas.random2,])
 | A| `r length(poblacion1$profundidad)`|
 | B| `r length(poblacion2$profundidad)`|
 
-Una vez generadas las dos poblaciones, utilizaremos la variable de quilates para obtener el IC de varianza de una población, para esto utilizaremos la librería EnvStats y especificamente su metodo vartTest que nos dará el intervalo que estamos buscando.
+Una vez generadas las dos poblaciones, utilizaremos la variable de quilates para obtener el IC de varianza de una población, para esto utilizaremos la librería EnvStats y específicamente su método vartTest que nos dará el intervalo que estamos buscando.
 
-En cuanto a las muestras o las poblaciones es importante mencionar que se estan usando las mismas que para la seccion anterior
+En cuanto a las muestras o las poblaciones es importante mencionar que se están usando las mismas que para la sección anterior
 
 Debemos tener en cuenta que:
 
-* El nivel de confianza utilizado sera de 95%
+* El nivel de confianza utilizado será de 95%
 * La población 1 y la población 2 siguen una distribución normal
 
-El codigo utilizado para este calculo fue:
+El código utilizado para este cálculo fue:
 
 ```{r}
 ##Población 1
@@ -313,15 +313,21 @@ Dando Como resultado para la primera población:
 Y dando como resultado para la segunda población:
 ]`r P2`[
 
+```{r}
+VP <- var(diamantes$quilate)
+```
+
+Tras realizar estos cambios sacamos la varianza de todo el dataset para comprobar que se encuentra dentro del IC de las poblaciones dando como resultado `r VP` y como podemos ver si se encuentra dentro de los dos intervalos lo que muestra que el cálculo fue hecho de manera correcta.
+
 ## IC de un cociente de Varianza
-Gracias a la librería stests podemos realizar el cociente de varianza de dos poblaciones, para esto utilizaremos a la población 1 y población 2 para realizar este calculo ademas de la variable de quilates para realizar el cálculo.
+Gracias a la librería stests podemos realizar el cociente de varianza de dos poblaciones, para esto utilizaremos a la población 1 y población 2 para realizar este cálculo además de la variable de quilates para realizar el cálculo.
 
 Debemos tener en cuenta lo siguiente:
 
-* El nivel de confianza utilizado sera de 95%.
-* La población 1 y población 2 se comportan normalmente.
+* El nivel de confianza utilizado será de 95%.
+* La población 1 y la población 2 se comportan normalmente.
 
-El codigo utilizado para este calculo fue:
+El código utilizado para este cálculo fue:
 
 ```{r}
 R <- stests :: var.test(poblacion1$quilate, poblacion2$quilate,conf.level = 0.95)$conf.int
@@ -336,4 +342,4 @@ Donde:
 Dando como resultado:
 ]`r R`[
 
-En conclusión al resultado obtenido podemos ver que las varianzas de estas dos poblaciones no deberian ser iguales ya que el numero 1 no pertenece al intervalo, sin embargo como no es 100% seguro y el intervalo esta muy cerca de 1, puede que en algun punto sus varianzas sean iguales, tambien podemos decir que en este caso la varianza de la población 1 es mayor a la de la población 2 ya que el intervalo es positivo.
+En conclusión al resultado obtenido podemos ver que las varianzas de estas dos poblaciones no deberían ser iguales ya que el número 1 no pertenece al intervalo, sin embargo como no es 100% seguro y el intervalo está muy cerca de 1, puede que en algún punto sus varianzas sean iguales, también podemos decir que en este caso la varianza de la población 1 es mayor a la de la población 2 ya que el intervalo es positivo.
