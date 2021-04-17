@@ -15,11 +15,12 @@ library(datos)
 library(EnvStats)
 library(stests)
 library("ggpubr")
+library(stats)
 ```
 
 # I Parte: explicación de los datos
 
-A continuación se presenta una tabla con los principales aspectos de el dataset utilizado
+A continuación se presenta una tabla con los principales aspectos de el dataset utilizado.
 
 **Dataset:** Diamantes
 
@@ -42,7 +43,7 @@ A continuación se presenta una tabla con los principales aspectos de el dataset
 
 ## IC de un promedio usando distribución Z
 
-A continuacion se presentan los Promedios usando distribución normal estandar de una población de datos sacados del dataset diamantes, utilizando la siguiente muestra de la variable precio del dataset de diamantes:
+A continuacion se presentan los promedios usando distribución normal estandar de una población de datos sacados del dataset diamantes, utilizando la siguiente muestra de la variable precio del dataset de diamantes:
 
 ```{r include=FALSE}
 # Se toman filas random para sacar del dataset
@@ -111,7 +112,7 @@ alpha1 <- 0.05
 |:--|:--|:--|:--|
 | A| `r n1`| `r mu1`| `r de1`|
 
-En este caso dado que el tamaño de la muestra es menor a 30 se ha optado por realizar una inspección visual de los datos para ver si se asemeja a una distribución normal
+En este caso dado que el tamaño de la muestra es menor a 30 se ha optado por realizar una inspección visual de los datos para ver si se asemeja a una distribución normal.
 
 ```{r echo=FALSE}
 ggdensity(muestra1$profundidad, 
@@ -140,7 +141,110 @@ Del cual se puede concluir que como la media de precios de todo el dataset de di
 
 ## IC de una proporción
 
+A continuación se presenta la proporcion para una población de datos tomados del dataset diamantes, para ello se ha utilizado una muestra de la variable "corte" donde se inculyen todos los diamantes cuyo corte sea de tipo "Premium" o "Ideal", utilizando una muestra de gama alta de la siguiente manera:
+
+```{r include=FALSE}
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+gamaAlta
+
+tamanioMuestraGama <- length(gamaAlta$corte)
+
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+tamanioMuestraColor <-length(exitos.alta$color)
+
+# Proporción de Gama Alta 
+
+prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), conf.level = 0.95)$conf.int
+```
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| Premium e Ideal| `r tamanioMuestraGama`| 
+
+Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cual es la proporción que existe de un diamante de corte premium o ideal que hemos llamado gama alta con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta que sean de color tipo D:
+
+| Color| Tamaño de muestra|
+|:--|:--|
+| D| `r tamanioMuestraColor`| 
+
+Dado que las muestras son mayores a 30 se puede asumir que la población sigue una distribución normal. Conociendo los datos se puede calcular la proporción, para esto se implementa la función prop.test para una población de la siguiente manera
+
+```{r}
+prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), conf.level = 0.95)$conf.int
+```
+
+En donde:
+
+* **x:** vector con el conteo de éxitos de la muestra
+* **n:** vector con el número de ensayos la muestra
+* **conf.level:** nivel de confianza
+
+Y se calcula la proporción  para un 95% de confianza:
+
+]0.1221170, 0.1290541[
+
+
+De la cual se puede concluir que la proporción de la muestra A es mayor que el de la muestra B
+
 ## IC de una diferencia de proporciones
+
+A continuación se presenta la diferencia de proporciones para dos poblaciones de datos tomados del dataset diamantes, para ello se han utilizado dos muestra de la variable "corte" donde en la primera se inculyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
+
+```{r include=FALSE}
+gamaBaja <- diamantes[diamantes$corte == "Regular" | diamantes$corte == "Bueno",]
+gamaBaja
+
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+gamaAlta
+
+tamañoMGB <- length(gamaBaja$corte)
+tamañoMGA <- length(gamaAlta$corte)
+
+exitos.baja <- gamaBaja[gamaBaja$color == "D",]
+exitosBaja <- length(exitos.baja$color) 
+
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+exitosAlta <- length(exitos.alta$color)
+
+# Proporción de Gama Alta menos proporción de Gama Baja
+prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(length(gamaBaja$corte), length(gamaAlta$corte)), conf.level = 0.95)$conf.int
+```
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| Premium e Ideal| `r tamañoMGA`| 
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| Regular y Bueno| `r tamañoMGA`| 
+
+Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cual es la diferencia de proporciones que existen de un diamante de gama alta y de gama baja con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta y baja que sean de color tipo D para representar los éxitos:
+
+| Gama | Color| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| D| `r exitosBaja`| 
+
+| Gama | Color| Tamaño de muestra|
+|:--|:--|:--|
+| Baja| D| `r exitosAlta`| 
+
+Dado que las muestras son mayores a 30 se puede asumir que la población sigue una distribución normal. Conociendo los datos se puede calcular la diferencia de proporciones, para esto se implementa la función prop.test para dos poblaciones de la siguiente manera
+
+```{r}
+prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(length(gamaBaja$corte), length(gamaAlta$corte)), conf.level = 0.95)$conf.int
+```
+
+En donde:
+
+* **x:** vector con el conteo de éxitos de la muestra
+* **n:** vector con el número de ensayos la muestra
+* **conf.level:** nivel de confianza
+
+Y se calcula la proporción  para un 95% de confianza:
+
+]0.6460786, 0.6691132[
+
+De la cual se puede concluir que la proporción de la muestra A es mayor que el de la muestra B.
 
 ## IC de una diferencia de promedios usando distribución z
 
@@ -239,20 +343,18 @@ Como se puede observar ambas muestras tiene forma de campana, por lo que se pued
 
 Conociendo esto se puede aproximar el IC mediante la funcion t.test, la cual tiene la siguiente estructura:
 
-t.test(x=muestra1$profundidad, y=muestra2$profundidad, conf.level = 0.95, var.equal = TRUE)
+```{r}
+IC <- t.test(x=muestra1$profundidad, y=muestra2$profundidad, conf.level = 0.95, var.equal = TRUE)$conf.int
+```
 
 Donde:
 
 * **x:** primera muestra
 * **y:** segunda muestra
 * **conf.level:** nivel de confidencia
-* **var.equal:** si la varianzas se asumen iguales
+* **var.equal:** si las varianzas se asumen iguales
 
 Y ahora se calcula la diferencia de promedios para un IC del 95%
-
-```{r include=FALSE}
-IC <- t.test(x=muestra1$profundidad, y=muestra2$profundidad, conf.level = 0.95, var.equal = TRUE)$conf.int
-```
 
 ]`r IC`[
 
