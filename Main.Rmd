@@ -1,5 +1,5 @@
 ---
-title: "Proyecto de estadístisca: Etapa 1"
+title: "Proyecto de estadística: Etapa 1"
 author: 
   - Sebastián Rojas Vargas
   - Francisco Soto Quesada
@@ -9,26 +9,47 @@ date: "17/4/2021"
 output: word_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Lista de librerías utilizadas
+
+```{r setup, message=F, warning=F, echo = T, results = 'hide'}
+library(visdat)
+library(ggplot2)
+library(DataExplorer)
 library(datos)
 library(EnvStats)
 library(stests)
 library("ggpubr")
 library(stats)
+library(BSDA)
+library(PASWR2)
 ```
 
 # I Parte: explicación de los datos
 
-A continuación se presenta una tabla con los principales aspectos de el dataset utilizado.
+A continuación, se presenta una tabla con los principales aspectos del dataset utilizado.
 
 **Dataset:** Diamantes
 
-**Descripción general:** el dataset resulta del paquete de datos que el profesor puso a disposición para la elección de la base de datos. Se eligió el dataset diamantes porque su estructura nos parece muy apropiada para el proyecto ya que cuenta con variables tanto cuantitativas como cualitativas, además que cuenta con gran cantidad de datos para la toma de muestras.
+**Descripción general:** se optó por la utilización del dataset de diamantes del paquete de datos de R. El motivo de la elección de este es que cuenta con una gran cantidad de datos y columnas. Estas últimas siendo de gran variedad entre datos cualitativos y cuantitativos. Además de todo esto el dataset cuenta con todas sus variables y sus datos ya traducidos al español, facilitando así la comprensión de los datos.
 
 **Filas:** 53 940
 
 **Columnas:** 10
+
+**Resumen del dataset:**
+
+```{r}
+str(diamantes)
+```
+
+**Resumen de los datos:**
+
+```{r}
+vis_dat(diamantes)
+plot_missing(diamantes)
+```
+
+En esta última imagen se puede observar que no hay datos faltantes en las columnas del dataset. Esto facilita los cálculos que se vean a realizar más adelante ya que no hay necesidad de filtrar los datos faltantes.
 
 ## Resumen de variables seleccionadas
 
@@ -36,7 +57,7 @@ A continuación se presenta una tabla con los principales aspectos de el dataset
 |:--|:--|:--|:--|
 | Precio| Cuantitativa| Precio en dólares estadounidenses| Promedio usando distribución z y distribución t|
 | Corte| Cualitativa| Calidad del corte (Regular, Bueno, Muy bueno, Premium, Ideal)| Proporción, diferencia de proporciones|
-| Profundidad| Cuantitativa| Porcentaje de la profundidad total en milimetros| Diferencia de promedios usando distribución z y distribución t|
+| Profundidad| Cuantitativa| Porcentaje de la profundidad total en milímetros| Diferencia de promedios usando distribución z y distribución t|
 | Quilates| Cuantitativa| Peso del diamante| Cociente de varianzas y varianza.
 
 # II parte: Análisis Inferencial (IC)
@@ -248,62 +269,48 @@ De la cual se puede concluir que la proporción de la muestra A es mayor que el 
 
 ## IC de una diferencia de promedios usando distribución z
 
-Para este ejemplo se utilizaran las siguientes muestras de la variable profundidad del dataset de diamantes:
+Para este ejemplo se utilizarán dos grupos. En primer lugar esta el grupo de diamantes que se considera que tienen un color de buena calidad, este grupo está compuesto de aquellos diamantes cuyo color es "D", "E" o "F". Luego se tiene el grupo diamantes cuya color es de peor calidad, el cual esta compuesto por los diamantes con colores "H", "I" o "J". Ambos grupos están distribuidos de la siguiente manera:
 
-```{r include=FALSE}
-# Se toman filas random para sacar del dataset
-set.seed(4562)
-filas.random <- sample(1:53940, 100, replace= F)
-filas.random2 <- sample(1:53940, 100, replace= F)
+```{r}
+gamaAlta <- diamantes[diamantes$color == "D" | diamantes$color == "E" | diamantes$color == "F",]
+gamaBaja <- diamantes[diamantes$color == "H" | diamantes$color == "I" | diamantes$color == "J",]
 
-# Se generan datasets nuevos con las filas random anteriores 
-muestra1 <- as.data.frame(diamantes[filas.random,])
-muestra2 <- as.data.frame(diamantes[filas.random2,])
+# Tamaño de gama alta
+length(gamaAlta$color)
+
+# Tamaño de gama baja
+length(gamaBaja$color)
 ```
 
-| Muestra| Tamaño| Promedio| Varianza|
-|:--|:--|:--|:--|
-| A| `r length(muestra1$profundidad)`| `r mean(muestra1$profundidad)`| `r var(muestra1$profundidad)`|
-| B| `r length(muestra2$profundidad)`| `r mean(muestra2$profundidad)`| `r var(muestra2$profundidad)`|
+| Calidad| Colores| Tamaño de muestra|
+|:--|:--|:--|
+| Buena| D, E o F| `r length(gamaAlta$color)`|
+| Peor| H, I o J| `r length(gamaBaja$color)`|
+
+**Hipótesis asumidas**
 
 Dado que ambas muestras son mayores a 30 se puede asumir que ambas siguen una distribución normal y que se puede aproximar σ₁ y σ₂ mediante s₁  y s₂.
 
-Ya sabiendo estos datos se puede aproximar el IC mediante el caso 1 de diferencia de promedios, para esto se implementa una función manual:
+**Cálculo**
+
+Una vez obtenidos estos datos se desea calcular la diferencia de promedios de profundidad entre la población de buena calidad y la de peor calidad con un intervalo de confianza del 95%. Para esto se hace uso de las siguientes funciones:
 
 ```{r}
-z.test2 <- function(mu1, mu2, n1, n2, var1, var2, alpha) {
-  c((mu1-mu2)+qnorm(alpha/2)*sqrt((var1/n1)+(var2/n2)),
-    (mu1-mu2)-qnorm(alpha/2)*sqrt((var1/n1)+(var2/n2)))
-}
+BSDA::z.test(x = gamaAlta$profundidad, y = gamaBaja$profundidad, sigma.x = sd(gamaAlta$profundidad), sigma.y = sd(gamaBaja$profundidad), conf.level = 0.95)$conf.int
+BSDA::z.test(x = gamaAlta$profundidad, y = gamaBaja$profundidad, sigma.x = sd(gamaAlta$profundidad), sigma.y = sd(gamaBaja$profundidad), conf.level = 0.95)$conf.int
 ```
 
-En donde:
+Ambas funciones aplican para una y dos poblaciones y están compuesta de los siguientes parámetros, en donde:
 
-* **mu1:** media de la primera muestra
-* **mu2:** media de la segunda muestra
-* **n1:** tamaño de la primera muestra
-* **n2:** tamaño de la segunda muestra
-* **var1:** varianza de la primera muestra
-* **var2:** varianza de la segunda muestra
-* **alpha:** valor de alpha
+* **x:** vector númerico que representa la primera muestra
+* **y:** vector númerico que representa la segunda muestra (opcional)
+* **sigma.x:** desviación estándar de x (opcional)
+* **sigma.y:** desviación estándar de y (opcional)
+* **conf.level:** nivel de confianza entre 0 y 1 (opcional, se asume 0.95 por defecto)
 
-Y ahora se calcula el intervalo para un IC del 95%:
+**Conclusiones**
 
-```{r include=FALSE}
-# Se calcula el IC
-IC <- z.test2(
-  mean(muestra1$profundidad), mean(muestra2$profundidad),
-  length(muestra1$profundidad), length(muestra2$profundidad),
-  var(muestra1$profundidad), var(muestra2$profundidad), 0.05)
-```
-
-]`r IC`[
-
-Del cual se podría concluir que existe la posibilidad de que:
-
-* El promedio de la muestra A es mayor que el de la muestra B
-* Las muestras tengan el mismo promedio
-* El promedio de la muestra B es mayor que el de la muestra A
+De los resultados obtenidos para la diferencia de promedios se puede concluir que hay una mayor cantidad de diamantes con colores de baja calidad que diamantes con colores de alta calidad.
 
 ## IC de una diferencia de promedios usando distribución t
 
