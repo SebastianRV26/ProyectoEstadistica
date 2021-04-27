@@ -78,9 +78,9 @@ var1 <- var(poblacion.precios)
 
 ```
 
-| Población| Tamaño| Promedio| Varianza|
+| Muestra| Tamaño| Promedio| Varianza|
 |:--|:--|:--|:--|
-| Diamantes| `r n1`| `r mu1`| `r var1`|
+| A| `r n1`| `r mu1`| `r var1`|
 
 **Hipótesis asumidas** 
 
@@ -185,7 +185,7 @@ IC
 
 **Conclusión**
 
-De los resultados obtenidos, se puede concluir que como la media de precios del dataset de diamantes `r mean(as.data.frame(diamantes)$precio)` se encuentra en el intervalo ]`r IC`[, todo está correcto.
+De los resultados obtenidos, se puede concluir que como la media de precios del dataset de diamantes `r mean(as.data.frame(diamantes)$precio)` se encuentra en el intervalo ]`r IC`[, todo está correcto, aunque comparándolo con el IC de la distribución Z, este posee menor precisión debido a la poca cantidad de datos que fueron brindados.
 
 ## IC de una proporción
 
