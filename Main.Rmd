@@ -64,7 +64,7 @@ En esta última imagen se puede observar que no hay datos faltantes en las colum
 
 ## IC de un promedio usando distribución Z
 
-A continuación se presentan los promedios usando distribución normal estándar de una población de datos extraídos del dataset diamantes, utilizando la siguiente datos de la variable precio del dataset de diamantes:
+A continuación, se presentan los promedios usando distribución normal estándar de una población de datos extraídos del dataset diamantes, utilizando los siguientes datos de la variable precio del dataset de diamantes:
 
 ```{r}
 set.seed(4562) # semilla
@@ -109,7 +109,7 @@ stests::z.test(
 Los parámetros tanto para BSDA y PASWR2 son los siguientes:
 
 * **x:** la muestra
-* **sigma.x:** desviación estandar de la muestra
+* **sigma.x:** desviación estándar de la muestra
 * **conf.level:** nivel de confidencia (opcional, se asume 0.95 por defecto)
 
 ```{r}
@@ -134,7 +134,7 @@ IC
 De los resultados obtenidos, se puede concluir que como la media de precios del dataset diamantes `r mean(poblacion.precios)` se encuentra en el intervalo ]`r IC`[ obtenido de tres librerías distintas, todo está correcto.
 
 ## IC de un promedio usando distribución t
-A continuación se presentan los Promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
+A continuación, se presentan los Promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
 
 ```{r}
 ## Se toman filas random para sacar del dataset
@@ -169,7 +169,7 @@ Como se puede observar, la muestra tiene forma de campana, por lo que se puede a
 
 **Cálculo**
 
-Conociendo esto se puede aproximar el IC mediante la funcion t.test, la cual tiene la siguiente estructura, con los siguientes parámetros:
+Conociendo esto se puede aproximar el IC mediante la función t.test, la cual tiene la siguiente estructura, con los siguientes parámetros:
 
 * **x:** muestra
 * **conf.level:** nivel de confidencia
@@ -200,7 +200,7 @@ length(gamaAlta$corte)
 |:--|:--|:--|
 | Alta| Premium e Ideal| `r length(gamaAlta$corte)`| 
 
-Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cual es la proporción que existe de un diamante de corte premium o ideal que hemos llamado gama alta con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta que sean de color tipo D:
+Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cuál es la proporción que existe de un diamante de corte premium o ideal que hemos llamado gama alta con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta que sean de color tipo D:
 
 ```{r}
 exitos.alta <- gamaAlta[gamaAlta$color == "D",]
@@ -244,7 +244,7 @@ De los resultados obtenidos se puede observar que el intervalo resultante es muy
 
 ## IC de una diferencia de proporciones
 
-A continuación, se presenta la diferencia de proporciones para dos poblaciones de datos tomados del dataset diamantes, para ello se han utilizado dos muestra de la variable "corte" donde en la primera se incluyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
+A continuación, se presenta la diferencia de proporciones para dos poblaciones de datos tomados del dataset diamantes, para ello se han utilizado dos muestras de la variable "corte" donde en la primera se incluyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
 
 ```{r}
 gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
@@ -263,7 +263,7 @@ length(exitos.baja$color)
 | Alta| Premium e Ideal| `r length(gamaAlta$corte)`|
 | Baja| Regular y Bueno| `r length(gamaBaja$corte)`| 
 
-Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cual es la diferencia de proporciones que existen de un diamante de gama alta y de gama baja con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta y baja que sean de color tipo D para representar los éxitos:
+Como sabemos el dataset diamantes contiene una variable llamada corte, de igual manera, este dataset contiene otra variable llamada color. Estas variables las utilizaremos para saber cuál es la diferencia de proporciones que existen de un diamante de gama alta y de gama baja con respecto al color que este posee. Para ello utilizamos la población de diamantes de gama alta y baja que sean de color tipo D para representar los éxitos:
 
 | Gama | Color| Tamaño de muestra|
 |:--|:--|:--|
@@ -274,7 +274,7 @@ Como sabemos el dataset diamantes contiene una variable llamada corte, de igual 
 
 Antes de realizar las operaciones se debe verificar que np > 5 y nq > 5 para las dos poblaciones
 
-Para ello tenemos los siguientes datos para la primer población: 
+Para ello tenemos los siguientes datos para la primera población: 
 
 $$p_{1} = \frac{x_{1}}{n_{1}} = \frac{4437}{35342} = 0.1255446777$$
 $$n_{1}p_{1} = 35342 * 0.1255446777 = 4437$$
@@ -344,7 +344,7 @@ Ambas funciones aplican para una y dos poblaciones y están compuestas de los si
 
 **Conclusiones**
 
-De los resultados obtenidos para la diferencia de promedios se puede concluir que hay una mayor cantidad de diamantes con colores de baja calidad que diamantes con colores de alta calidad.
+De los resultados obtenidos para la diferencia de promedios se puede concluir que la media de profundidad de diamantes con colores de baja calidad es mayor que la diamantes con colores de alta calidad.
 
 ## IC de una diferencia de promedios usando distribución t
 
@@ -410,13 +410,13 @@ Donde:
 A diferencia del caso anterior, dado a que las muestras aquí son más pequeñas, se puede observar que hay tanto valores negativos como positivos, por lo cual no se puede llegar a una conclusión con certeza ya que existe la posibilidad de que ambas muestras sean iguales o que una sea mayor que otra.
 
 ## IC de una varianza
-A continuación se presenta IC de la varianza de la variable quilates del dataset diamantes.
+A continuación, se presenta IC de la varianza de la variable quilates del dataset diamantes.
 
 | Muestra| Tamaño|
 |:--|:--|
 | A| `r length(diamantes$quilate)`|
 
-Una vez tenemos la muestra, utilizaremos la variable de quilates para obtener el IC de varianza de la muestra, para esto utilizaremos la librería EnvStats y específicamente su método vartTest que nos dará el intervalo que estamos buscando.
+Una vez tenemos la muestra, utilizaremos la variable de quilates para obtener el IC de varianza de la muestra, para esto utilizaremos la librería EnvStats y específicamente su método varTest que nos dará el intervalo que estamos buscando.
 
 Antes de realizar el cálculo debemos tener en cuenta lo siguiente:
 
@@ -488,7 +488,7 @@ Donde:
 Dando como resultado:
 ]`r R`[
 
-En conclusión al resultado obtenido podemos ver que las varianzas de estas dos poblaciones no deberían ser iguales ya que el número 1 no pertenece al intervalo, también podemos decir que el la varianza de la segunda población es mayor ya que ambos valores son menores que 1.
+En conclusión, al resultado obtenido podemos ver que las varianzas de estas dos poblaciones no deberían ser iguales ya que el número 1 no pertenece al intervalo, también podemos decir que la varianza de la segunda población es mayor ya que ambos valores son menores que 1.
 
 # III Parte: Análisis Inferencial (pruebas de hipótesis de una y dos poblaciones)
 
@@ -507,12 +507,227 @@ En conclusión al resultado obtenido podemos ver que las varianzas de estas dos 
 | Variables| Tipos| Descripción| Parámetro por estimar (IC)|
 |:--|:--|:--|:--|
 | Corte| Cualitativa| Calidad del corte (Regular, Bueno, Muy bueno, Premium, Ideal)| Diferencia de proporciones|
-| Profundidad| Cuantitativa| Porcentaje de la profundidad total en milímetros| Diferencia de promedios usando distribución z y distribución t|
-| Quilates| Cuantitativa| Peso del diamante| Cociente de varianzas
+| Profundidad| Cuantitativa| Porcentaje de la profundidad total en milímetros| Diferencia de promedios usando distribución z y t y cociente de varianzas|
 
 ## Prueba de hipótesis para un promedio usando distribución Z
 
+Para este ejemplo se utilizarán dos grupos (los mismo utilizados para la prueba del IC). En primer lugar, está el grupo de diamantes que se considera que tienen un color de buena calidad, este grupo está compuesto de aquellos diamantes cuyo color es "D", "E" o "F". Luego se tiene el grupo diamantes cuyo color es de peor calidad, el cual está compuesto por los diamantes con colores "H", "I" o "J". Ambos grupos están distribuidos de la siguiente manera:
+
+```{r}
+buenaCalidad <- diamantes[diamantes$color == "D" | diamantes$color == "E" | diamantes$color == "F",]
+peorCalidad <- diamantes[diamantes$color == "H" | diamantes$color == "I" | diamantes$color == "J",]
+
+length(buenaCalidad$color)
+length(peorCalidad$color)
+```
+
+| Calidad| Colores| Tamaño de muestra|
+|:--|:--|:--|
+| Buena| D, E o F| `r length(buenaCalidad$color)`|
+| Peor| H, I o J| `r length(peorCalidad$color)`|
+
+**Hipótesis asumidas**
+
+Dado que ambas muestras son mayores a 30 se puede asumir que ambas siguen una distribución normal y que se puede aproximar σ₁ y σ₂ mediante s₁  y s₂. Además ambos grupos son independientes.
+
+**Cálculo**
+
+Sea:
+
+* $\mu_{b}$: la media de la profundidad de los diamantes de buena calidad
+* $\mu_{m}$: la media de la profundidad de los diamantes de peor calidad
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \mu_{b} - \mu_{m} = 0$
+* $H_{1}: \mu_{b} - \mu_{m} > 0$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de las siguientes funciones:
+
+```{r}
+BSDA::z.test(x = buenaCalidad$profundidad, y = peorCalidad$profundidad, sigma.x = sd(buenaCalidad$profundidad), sigma.y = sd(peorCalidad$profundidad), mu = 0, alternative = "greater")
+PASWR2::z.test(x = buenaCalidad$profundidad, y = peorCalidad$profundidad, sigma.x = sd(buenaCalidad$profundidad), sigma.y = sd(peorCalidad$profundidad), mu = 0, alternative = "greater")
+```
+
+Ambas funciones aplican para una y dos poblaciones y están compuestas de los siguientes parámetros, en donde:
+
+* **x:** vector numérico que representa la primera muestra
+* **y:** vector numérico que representa la segunda muestra (opcional)
+* **sigma.x:** desviación estándar de x (opcional)
+* **sigma.y:** desviación estándar de y (opcional)
+* **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $z_{obs}$|
+| Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
+| Región de aceptación| ]-0.1889905, +$\infty$[|
+| Región de rechazo| ]-$\infty$, -0.1889905[|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de la profundidad de diamantes con color de mejor calidad es menor a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
+
+## Prueba de hipótesis para un cociente de varianzas
+
+Para este caso se utilizarán muestras aleatorias sin reemplazo de tamaño 25 de los dos mismos grupos utilizados en cálculo del IC para diferencia de promedios con distribución t (diamantes con color de buena calidad y diamantes con color de peor calidad).
+
+```{r}
+# Se sacan los datos de la calidad
+buenaCalidad <- diamantes[diamantes$color == "D" | diamantes$color == "E" | diamantes$color == "F",]
+peorCalidad <- diamantes[diamantes$color == "H" | diamantes$color == "I" | diamantes$color == "J",]
+
+# Se toman las filas para las muestras aleatorias
+set.seed(6894)
+filas.randomMejorCalidad <- sample(1:length(buenaCalidad$color), 25, replace= F)
+filas.randomPeorCalidad <- sample(1:length(peorCalidad$color), 25, replace= F)
+
+muestraMejorCalidad <- as.data.frame(buenaCalidad[filas.randomMejorCalidad,])
+muestraPeorCalidad <- as.data.frame(peorCalidad[filas.randomPeorCalidad,])
+
+length(muestraMejorCalidad$color)
+length(muestraPeorCalidad$color)
+```
+
+| Calidad| Colores| Tamaño de muestra|
+|:--|:--|:--|
+| Buena| D, E o F| `r length(muestraMejorCalidad$color)`|
+| Peor| H, I o J| `r length(muestraPeorCalidad$color)`|
+
+Previamente ya se había realizado una prueba de normalidad de estas muestras en el cálculo del IC para diferencia de promedio, sin embargo, aquí se adjunta la prueba de nuevo:
+
+```{r echo=FALSE}
+ggdensity(muestraMejorCalidad$profundidad, 
+          main = "Gráfico de densidad de la profundidad de la muestra A",
+          xlab = "Profundidad de los diamantes")
+```
+
+```{r echo=FALSE}
+ggdensity(muestraPeorCalidad$profundidad, 
+          main = "Gráfico de densidad de la profundidad de la muestra B",
+          xlab = "Profundidad de los diamantes")
+```
+
+**Hipótesis asumidas**
+
+* El nivel de confianza utilizado será de 95%.
+* La población 1 y la población 2 se comportan normalmente.
+
+**Cálculo**
+
+Sea:
+
+* $\sigma^{2}_{b}$: la media de la profundidad de los diamantes de buena calidad
+* $\sigma^{2}_{m}$: la media de la profundidad de los diamantes de peor calidad
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \frac{\sigma^{2}_{b}}{\sigma^{2}_{m}} = 1$
+* $H_{1}: \frac{\sigma^{2}_{b}}{\sigma^{2}_{m}} ≠ 0$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de la siguiente función:
+
+```{r}
+stests::var.test(x = muestraMejorCalidad$profundidad, y = muestraPeorCalidad$profundidad)
+```
+
+Donde:
+
+* **x:** primera muestra
+* **y:** segunda muestra (opcional)
+* **alternative:** si es de cola derecha, doble cola o cola izquierda (opcional)
+* **null.value:** por defecto es 1 considerando que la relación entre las varianzas es 1. (opcional)
+* **conf.level:** nivel de confidencia (opcional)
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $f_{obs}$|
+| Grados de libertad| $v_{b} = 24$ $v_{m} = 24$|
+| Estadístico de prueba| $\frac{s^{2}_{b}}{s^{2}_{m}}$|
+| Región de aceptación| ]1.245114, 6.411864[|
+| Región de rechazo| ]-$\infty$, 1.245114[$\cup$]6.411864, +$\infty$[|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+Se llegó a encontrar evidencia contra $H_{0}$ por lo cual se puede asumir que la varianza de la profundidad de diamantes con color de mejor calidad es distinta a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene un rechazo fuerte de $H_{0}$.
+
 ## Prueba de hipótesis para un promedio usando distribución t
+
+Para este caso se utilizarán muestras las mismas muestras del ejemplo anterior (diamantes con color de buena calidad y diamantes con color de peor calidad).
+
+```{r}
+# Se sacan los datos de la calidad
+buenaCalidad <- diamantes[diamantes$color == "D" | diamantes$color == "E" | diamantes$color == "F",]
+peorCalidad <- diamantes[diamantes$color == "H" | diamantes$color == "I" | diamantes$color == "J",]
+
+# Se toman las filas para las muestras aleatorias
+set.seed(6894)
+filas.randomMejorCalidad <- sample(1:length(buenaCalidad$color), 25, replace= F)
+filas.randomPeorCalidad <- sample(1:length(peorCalidad$color), 25, replace= F)
+
+muestraMejorCalidad <- as.data.frame(buenaCalidad[filas.randomMejorCalidad,])
+muestraPeorCalidad <- as.data.frame(peorCalidad[filas.randomPeorCalidad,])
+
+length(muestraMejorCalidad$color)
+length(muestraPeorCalidad$color)
+```
+
+| Calidad| Colores| Tamaño de muestra|
+|:--|:--|:--|
+| Buena| D, E o F| `r length(muestraMejorCalidad$color)`|
+| Peor| H, I o J| `r length(muestraPeorCalidad$color)`|
+
+**Hipótesis asumidas**
+
+Por el ejemplo anterior se puede asumir que ambas muestras siguen una distribución normal y que la varianzas son distintas.
+
+**Cálculo**
+
+Sea:
+
+* $\mu_{b}$: la media de la profundidad de los diamantes de buena calidad
+* $\mu_{m}$: la media de la profundidad de los diamantes de peor calidad
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \mu_{b} - \mu_{m} = 0$
+* $H_{1}: \mu_{b} - \mu_{m} > 0$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de las siguientes funciones:
+
+```{r}
+t.test(x = muestraMejorCalidad$profundidad, y = muestraPeorCalidad$profundidad, mu = 0, alternative = "greater", var.equal = F)
+```
+
+La función está compuesta de los siguientes parámetros, en donde:
+
+* **x:** vector numérico que representa la primera muestra
+* **y:** vector numérico que representa la segunda muestra (opcional)
+* **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+* **var.equal** indica si las varianzas se asumen iguales
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $t_{obs}$|
+| Grados de libertad| 39|
+| Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
+| Región de aceptación| ]-0.7404251, +$\infty$[|
+| Región de rechazo| ]-$\infty$, -0.7404251[|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de la profundidad de diamantes con color de mejor calidad es menor a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
 
 ## Prueba de hipótesis para una proporción
 
@@ -523,5 +738,3 @@ En conclusión al resultado obtenido podemos ver que las varianzas de estas dos 
 ## Prueba de hipótesis para una diferencia de promedios usando distribución t
 
 ## Prueba de hipótesis para una varianza
-
-## Prueba de hipótesis para un cociente de varianzas
