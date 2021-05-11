@@ -60,7 +60,7 @@ En esta última imagen se puede observar que no hay datos faltantes en las colum
 | Profundidad| Cuantitativa| Porcentaje de la profundidad total en milímetros| Diferencia de promedios usando distribución z y distribución t|
 | Quilates| Cuantitativa| Peso del diamante| Cociente de varianzas y varianza.
 
-# II parte: Análisis Inferencial (IC)
+# II Parte: Análisis Inferencial (IC)
 
 ## IC de un promedio usando distribución Z
 
@@ -443,7 +443,7 @@ Dando Como resultado el IC de varianza:
 ]`r P1`[ , como podemos ver el intervalo es muy pequeño y esto se debe a que se usaron una gran cantidad de datos para realizar el cálculo, dando un resultado muy preciso.
 
 
-## IC de un cociente de Varianza
+## IC de un cociente de varianzas
 Gracias a la librería stests podemos realizar el cociente de varianza de dos poblaciones, para esto dividiremos el dataset de diamantes de dos poblaciones la primera contendrá los diamantes que tengan una alta claridad, teniendo como la más baja calidad posible para esta población VS1 y una segunda población que estará compuesta por los diamantes que tengan una claridad igual o inferior a VS2.
 
 
@@ -489,3 +489,39 @@ Dando como resultado:
 ]`r R`[
 
 En conclusión al resultado obtenido podemos ver que las varianzas de estas dos poblaciones no deberían ser iguales ya que el número 1 no pertenece al intervalo, también podemos decir que el la varianza de la segunda población es mayor ya que ambos valores son menores que 1.
+
+# III Parte: Análisis Inferencial (pruebas de hipótesis de una y dos poblaciones)
+
+## Resumen de variables seleccionadas
+
+**Una población:**
+
+| Variables| Tipos| Descripción| Parámetro por estimar (IC)|
+|:--|:--|:--|:--|
+| Precio| Cuantitativa| Precio en dólares estadounidenses| Promedio usando distribución z y distribución t|
+| Corte| Cualitativa| Calidad del corte (Regular, Bueno, Muy bueno, Premium, Ideal)| Proporción |
+| Quilates| Cuantitativa| Peso del diamante| Varianza
+
+**Dos poblaciones:**
+
+| Variables| Tipos| Descripción| Parámetro por estimar (IC)|
+|:--|:--|:--|:--|
+| Corte| Cualitativa| Calidad del corte (Regular, Bueno, Muy bueno, Premium, Ideal)| Diferencia de proporciones|
+| Profundidad| Cuantitativa| Porcentaje de la profundidad total en milímetros| Diferencia de promedios usando distribución z y distribución t|
+| Quilates| Cuantitativa| Peso del diamante| Cociente de varianzas
+
+## Prueba de hipótesis para un promedio usando distribución Z
+
+## Prueba de hipótesis para un promedio usando distribución t
+
+## Prueba de hipótesis para una proporción
+
+## Prueba de hipótesis para una diferencia de proporciones
+
+## Prueba de hipótesis para una diferencia de promedios usando distribución z
+
+## Prueba de hipótesis para una diferencia de promedios usando distribución t
+
+## Prueba de hipótesis para una varianza
+
+## Prueba de hipótesis para un cociente de varianzas
