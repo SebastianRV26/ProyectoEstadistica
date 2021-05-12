@@ -511,6 +511,14 @@ En conclusión, al resultado obtenido podemos ver que las varianzas de estas dos
 
 ## Prueba de hipótesis para un promedio usando distribución Z
 
+## Prueba de hipótesis para un promedio usando distribución t
+
+## Prueba de hipótesis para una proporción
+
+## Prueba de hipótesis para una diferencia de proporciones
+
+## Prueba de hipótesis para una diferencia de promedios usando distribución z
+
 Para este ejemplo se utilizarán dos grupos (los mismo utilizados para la prueba del IC). En primer lugar, está el grupo de diamantes que se considera que tienen un color de buena calidad, este grupo está compuesto de aquellos diamantes cuyo color es "D", "E" o "F". Luego se tiene el grupo diamantes cuyo color es de peor calidad, el cual está compuesto por los diamantes con colores "H", "I" o "J". Ambos grupos están distribuidos de la siguiente manera:
 
 ```{r}
@@ -658,7 +666,8 @@ Donde:
 
 Se llegó a encontrar evidencia contra $H_{0}$ por lo cual se puede asumir que la varianza de la profundidad de diamantes con color de mejor calidad es distinta a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene un rechazo fuerte de $H_{0}$.
 
-## Prueba de hipótesis para un promedio usando distribución t
+
+## Prueba de hipótesis para una diferencia de promedios usando distribución t
 
 Para este caso se utilizarán muestras las mismas muestras del ejemplo anterior (diamantes con color de buena calidad y diamantes con color de peor calidad).
 
@@ -728,13 +737,5 @@ La función está compuesta de los siguientes parámetros, en donde:
 **Conclusiones**
 
 No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de la profundidad de diamantes con color de mejor calidad es menor a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
-
-## Prueba de hipótesis para una proporción
-
-## Prueba de hipótesis para una diferencia de proporciones
-
-## Prueba de hipótesis para una diferencia de promedios usando distribución z
-
-## Prueba de hipótesis para una diferencia de promedios usando distribución t
 
 ## Prueba de hipótesis para una varianza
