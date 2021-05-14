@@ -1,5 +1,5 @@
 ---
-title: "Proyecto de estadística: Etapa 1"
+title: "Proyecto de estadística: Etapa 2"
 author: 
   - Sebastián Rojas Vargas
   - Francisco Soto Quesada
@@ -511,7 +511,169 @@ En conclusión, al resultado obtenido podemos ver que las varianzas de estas dos
 
 ## Prueba de hipótesis para un promedio usando distribución Z
 
+Para este ejemplo se utilizarán dos grupos (los mismo utilizados para la prueba del IC para un promedio usando distribución Z). Utilizando todos los datos de la variable precio extraídos del dataset diamantes. Tal está distribuido de la siguiente manera:
+
+```{r}
+set.seed(4562) # semilla
+
+poblacion <- as.data.frame(diamantes)
+poblacion.precios <- poblacion$precio
+
+n1 <- length(poblacion.precios)
+mu1 <- mean(poblacion.precios)
+var1 <- var(poblacion.precios)
+
+n1
+```
+
+| Muestra| Tamaño| Promedio| Varianza|
+|:--|:--|:--|:--|
+| A| `r n1`| `r mu1`| `r var1`|
+
+**Hipótesis asumidas**
+
+Dado que la muestra es mayor a 30 se puede asumir que la población sigue una distribución normal y que se puede aproximar σ₁ mediante s₁.
+
+
+**Cálculo**
+
+Sea:
+
+* $\mu_{p}$: la media del precio de los diamantes
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \mu_{p} = 4000$
+* $H_{1}: \mu_{p} > 4000$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de las siguientes funciones:
+
+```{r}
+stests::z.test(
+  x = poblacion.precios, 
+  sigma2 = var(poblacion.precios), 
+  mu = 4000, alternative = "greater"
+)
+
+BSDA::z.test(
+  x = poblacion.precios, 
+  sigma.x = sd(poblacion.precios), 
+  mu = 4000, alternative = "greater"
+)
+
+PASWR2::z.test(
+  x = poblacion.precios, 
+  sigma.x = sd(poblacion.precios), 
+  mu = 4000, alternative = "greater"
+)
+
+```
+
+Las funciones BSDA y PASWR2 aplican para una y dos poblaciones y están compuestas de los siguientes parámetros, en donde:
+
+* **x:** vector numérico que representa la primer muestra
+* **sigma.x:** desviación estándar de x (opcional)
+* **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+
+En cambio las funciones de stests solo aplican para una población, la cual cuenta con los parámetros donde:
+
+* **x:** vector numérico que representa la primer muestra
+* **sigma2:** varianza de x (opcional)
+* **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $z_{obs}$|
+| Estadístico de prueba| $\tilde{x}_p$|
+| Región de aceptación| ]3904.545, +$\infty$[|
+| Región de rechazo| ]-$\infty$, 3904.545[|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de los precios de diamantes es menor o igual a 4000 dólares estadounidenses. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
+
 ## Prueba de hipótesis para un promedio usando distribución t
+
+Para este caso se utilizarán muestras las mismas muestras del caso anterior (precio de los diamantes), pero esta vez con una muestra de 20 datos.
+
+```{r}
+## Se toman filas random para sacar del dataset
+set.seed(6894)
+filas.random <- sample(1:53940, 20, replace= T)
+
+## Se generan datasets nuevos con las filas random anteriores 
+muestra1 <- as.data.frame(diamantes[filas.random,])
+muestra.precios <- muestra1$precio
+n1 <- length(muestra.precios)
+mu1 <- mean(muestra.precios)
+de1 <- sqrt(var(muestra.precios))
+alpha1 <- 0.05
+
+```
+
+| Muestra| Tamaño| Promedio| Desviación estandar|
+|:--|:--|:--|:--|
+| A| `r n1`| `r mu1`| `r de1`|
+
+En este caso dado que el tamaño de la muestra es menor a 30 se ha optado por realizar una inspección visual de los datos para ver si se asemeja a una distribución normal.
+
+```{r echo=FALSE}
+ggdensity(muestra1$profundidad, 
+          main = "Gráfico de densidad de la profundidad de la muestra A",
+          xlab = "Precio de los diamantes")
+```
+
+**Hipótesis asumidas**
+
+Como se puede observar, la muestra tiene forma de campana, por lo que se puede asumir que sigue una distribución normal. 
+
+**Cálculo**
+
+Sea:
+
+* $\mu_{p}$: la media del precio de los diamantes
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \mu_{p} = 4000$
+* $H_{1}: \mu_{p} > 4000$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de la siguient función:
+
+
+```{r}
+t.test(
+  x = muestra.precios, 
+  mu = 4000, alternative = "greater"
+  )
+```
+
+La función está compuesta de los siguientes parámetros, en donde:
+
+* **x:** vector numérico que representa la primera muestra
+* **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $t_{obs}$|
+| Grados de libertad| 19|
+| Estadístico de prueba| $\tilde{x}_t$|
+| Región de aceptación| ]2664.219, +$\infty$[|
+| Región de rechazo| ]-$\infty$, 2664.219[|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media del precio de los diamantes es menor o igual a 4000 dólares estadounidenses. Esto concordando también con los resultados del valor P, donde se tiene una aceptación de $H_{0}$.
+
 
 ## Prueba de hipótesis para una proporción
 
