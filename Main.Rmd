@@ -676,9 +676,288 @@ La función está compuesta de los siguientes parámetros, en donde:
 No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media del precio de los diamantes es menor o igual a 4000 dólares estadounidenses. Esto concordando también con los resultados del valor P, donde se tiene una aceptación de $H_{0}$.
 
 
+
 ## Prueba de hipótesis para una proporción
 
+```{r include=FALSE}
+library(datos)
+library(stats)
+
+
+
+
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+tamañoMuestraGama <- length(gamaAlta$corte)
+
+
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+tamañoMuestraColor <-length(exitos.alta$color)
+
+
+
+prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), p = 0.12, alternative = "less", conf.level = 0.95)
+
+```
+
+Basado en la experiencia, un joyero afirma que mínimo el 12% de los diamantes de gama alta son de color tipo D
+
+¿Podemos aceptar la afirmación del joyero?
+
+Para realizar la prueba, se consideran las siguientes hipótesis:
+
+\(H_{0}:p =0.12(\geq )\)
+
+\(H_{1}:p < 0.12\)
+
+dónde p representa la proporción de que unos diamantes de gama alta elegidos al azar, sean de color tipo D. La prueba a realizar es de cola izquierda.
+
+En R se está implementado la función prop.test, que además también sirve para contrastar dos proporciones por medio de muestras independientes grandes.
+
+Su sintaxis es:
+
+              prop.test(x, n, p = ..., alternative = ..., conf.level = ...)
+
+donde:
+
+* **n** es el tamaño de la muestra.
+
+* **x** es el número de éxitos de la muestra.
+
+* **p** es la proporción poblacional que contrastamos.
+
+* **alternative** especifica la hipótesis alternativa, debe ser "two.sided", "greater" o "less". 
+* **conf.level** es el nivel de confianza.
+
+
+Para obtener el valor n se tomaron lo datos del dataset "Diamantes" donde se utilizó una muestra de la variable "corte" incluyendosen todos los diamantes cuyo corte sea de tipo "Premium" o "Ideal", siendo esta una muestra de diamantes de gama alta, de la siguiente manera:
+
+
+```{r}
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+gamaAlta
+tamañoMuestraGama <- length(gamaAlta$corte)
+tamañoMuestraGama
+
+```
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| Premium e Ideal| `r tamañoMuestraGama`| 
+
+
+
+Para obtener el valor x se incorporó la variable color del dataset "Diamantes" para saber cual es numero de diamantes que hay de corte "premium" o "Ideal" (que hemos llamado gama alta) de color tipo D, de la siguiente manera:
+
+```{r}
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+exitos.alta
+tamañoMuestraColor <-length(exitos.alta$color)
+tamañoMuestraColor
+```
+
+| Gama| Corte| Color| Tamaño de muestra|
+|:--|:--|:--|:--|
+| Alta| Premiun e Ideal | D| `r tamañoMuestraColor`| 
+
+
+Antes de realizar las operaciones se debe verificar que np > 5 y nq > 5
+
+Para ello tenemos los siguientes datos:
+
+p = x/n = 4437/35342 = 0.1255446777
+
+np = 35342 * 0.1255446777 = 4437
+                                        
+q = 1-p = 1 - 0.1255446777 = 0.8744553223
+                                        
+nq = 35342 * 0.8744553223 = 30905
+
+                                        
+Como ambos valores son mayores a 5 se procede a utilizar la función prop.test con sus respectivos valores
+```{r}
+prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), p = 0.12, alternative = "less", conf.level = 0.95)
+```
+
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $z_{obs}$ = 3.199531216|
+| Grados de libertad| no corresponde|
+| Estadístico de prueba| $\tilde{p}$ = 0.1255447|
+| Región de aceptación| ]0.0000000, 0.1284867[|
+| Región de rechazo| ]0.1284867, 1[|
+| Nivel de confianza| 0.95|
+
+
+Conclusion:
+
+\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente para rechazarlo, ya que según lo observado el 12 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa por lo que lo ubica en la region de aceptación, y por ende se asume como verdadera la afirmación del joyero.  
+
 ## Prueba de hipótesis para una diferencia de proporciones
+
+```{r include=FALSE}
+library(datos)
+library(stats)
+
+
+
+
+gamaBaja <- diamantes[diamantes$corte == "Regular" | diamantes$corte == "Bueno",]
+gamaBaja
+
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+gamaAlta
+
+
+
+tamañoMGB <- length(gamaBaja$corte)
+tamañoMGA <- length(gamaAlta$corte)
+
+
+
+exitos.baja <- gamaBaja[gamaBaja$color == "D",]
+exitosBaja <- length(exitos.baja$color) 
+
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+exitosAlta <- length(exitos.alta$color)
+
+
+
+
+prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(length(gamaAlta$corte), length(gamaBaja$corte)))
+```
+
+
+Para las pruebas de contraste de proporciones para muestras grandes, se utilizará la función prop.test
+
+Su sintaxis es:
+
+              prop.test(x, n, p = ..., alternative = ..., conf.level = ...)
+
+donde:
+
+* **n** es un vector de dos entradas de los respectivos tamaños de las muestras.
+
+* **x** es el vector de dos numeros naturales que representan los éxitos ambas muestras.
+
+
+Es este ejercicio se contrastará si la proporción de diamantes de gama alta de color tipo D es la misma que la proporción de diamantes de gama baja de color tipo D
+
+Para realizar esta prueba, se considerarán las siguientes hipótesis:
+
+\(H_{0}:p_{a}-p_{b} = 0\)
+
+\(H_{1}:p_{a}-p_{b} \neq 0\)
+
+
+Para obtener el valor n se tomaron dos muestras de la variable "corte", en la primera muestra se inculyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
+
+
+```{r}
+gamaAlta <- diamantes[diamantes$corte == "Premium" | diamantes$corte == "Ideal",]
+gamaAlta
+
+gamaBaja <- diamantes[diamantes$corte == "Regular" | diamantes$corte == "Bueno",]
+gamaBaja
+
+tamañoMGA <- length(gamaAlta$corte)
+tamañoMGA
+
+tamañoMGB <- length(gamaBaja$corte)
+tamañoMGB
+
+```
+
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| Premium e Ideal| `r tamañoMGA`| 
+
+
+| Gama| Corte| Tamaño de muestra|
+|:--|:--|:--|
+| Baja| Regular y Bueno| `r tamañoMGB`| 
+
+
+
+Para obtener el valor x se incorporó la variable color del dataset "Diamantes", con el fin de calcular cuantos diamantes de gama alta y baja son de color tipo D, de la siguiente manera:
+
+```{r}
+exitos.alta <- gamaAlta[gamaAlta$color == "D",]
+exitos.alta
+
+exitos.baja <- gamaBaja[gamaBaja$color == "D",]
+exitos.baja
+
+
+exitosAlta <- length(exitos.alta$color)
+exitosAlta
+
+exitosBaja <- length(exitos.baja$color) 
+exitosBaja
+```
+
+| Gama | Color| Tamaño de muestra|
+|:--|:--|:--|
+| Alta| D| `r exitosAlta`| 
+
+| Gama | Color| Tamaño de muestra|
+|:--|:--|:--|
+| Baja| D| `r exitosBaja`| 
+
+
+
+
+Antes de realizar las operaciones se debe verificar que np > 5 y nq > 5 para las dos poblaciones
+
+Para ello tenemos los siguientes datos para la primer población: 
+
+p1 = x1/n1 = 4437/35342 = 0.1255446777
+
+n1p1 = 35342 * 0.1255446777 = 4437
+
+q1 = 1-p1 = 1 - 0.1255446777 = 0.8744553223
+
+n1q1 = 35342 * 0.8744553223 = 30905
+  
+  
+Y tenemos los siguientes datos para la segunda población: 
+
+p2 = x2/n2 = 825/6516 = 0.126611418
+
+n2p2 = 6516 * 0.126611418 = 825
+
+q2 = 1-p2 = 1 - 0.126611418 = 0.873388582
+
+n2q2 = 6516 * 0.873388582 = 5691
+  
+
+                                        
+Como ambos valores son mayores a 5 se procede a utilizar la función prop.test con sus respectivos valores
+```{r}
+prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(length(gamaAlta$corte), length(gamaBaja$corte)))
+```
+
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| $z_{obs}$ = -0.0010667|
+| Grados de libertad| no corresponde|
+| Estadístico de prueba| $\tilde{p_1}$ = 0.1255447  $\tilde{p_2}$ = 0.1266114|
+| Región de aceptación| ]-0.009939703, 0.007806222[|
+| Región de rechazo| ]-$\infty$, -0.009939703[ $\cup$ ]0.007806222, +$\infty$[|
+| Nivel de confianza| 0.95|
+
+
+Conclusion:
+
+\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente para rechazarlo, ya que segÚn lo observado el 0 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa por lo que lo ubica en la region de aceptación, y por ende se asume que la proporciÓn de diamantes de gama alta con color de tipo D se puede considerar similar a la proporciÓn de diamantes de gama baja con color de tipo D.   
+
+
 
 ## Prueba de hipótesis para una diferencia de promedios usando distribución z
 
