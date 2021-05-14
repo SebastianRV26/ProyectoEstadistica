@@ -588,13 +588,14 @@ En cambio las funciones de stests solo aplican para una población, la cual cuen
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| $z_{obs}$|
-| Estadístico de prueba| $\tilde{x}_p$|
-| Región de aceptación| ]3904.545, +$\infty$[|
-| Región de rechazo| ]-$\infty$, 3904.545[|
-| Nivel de confianza| 0.95|
+| Valor observado| $z_{obs}=-3.9121$|
+| Grados de libertad| No corresponde|
+| Estadístico de prueba| $\tilde{x}_p=4000$|
+| Región de aceptación| ]3904.545, $+\infty$[|
+| Región de rechazo| ]$-\infty$, 3904.545[|
+| Nivel de confianza| 95%|
 
-**Conclusiones**
+**Conclusión**
 
 No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de los precios de diamantes es menor o igual a 4000 dólares estadounidenses. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
 
@@ -664,14 +665,15 @@ La función está compuesta de los siguientes parámetros, en donde:
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| $t_{obs}$|
-| Grados de libertad| 19|
-| Estadístico de prueba| $\tilde{x}_t$|
-| Región de aceptación| ]2664.219, +$\infty$[|
-| Región de rechazo| ]-$\infty$, 2664.219[|
-| Nivel de confianza| 0.95|
+| Valor observado| $t_{obs}=0.55392$|
+| Grados de libertad| $v=19$|
+| Estadístico de prueba| $\tilde{x}_t=4000$|
+| Región de aceptación| ]2664.219, $+\infty$[|
+| Región de rechazo| ]$-\infty$, 2664.219[|
+| Nivel de confianza| 95%|
 
-**Conclusiones**
+
+**Conclusión**
 
 No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media del precio de los diamantes es menor o igual a 4000 dólares estadounidenses. Esto concordando también con los resultados del valor P, donde se tiene una aceptación de $H_{0}$.
 
