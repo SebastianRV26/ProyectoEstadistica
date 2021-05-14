@@ -22,6 +22,7 @@ library("ggpubr")
 library(stats)
 library(BSDA)
 library(PASWR2)
+library(TeachingDemos)
 ```
 
 # I Parte: explicación de los datos
@@ -901,3 +902,55 @@ La función está compuesta de los siguientes parámetros, en donde:
 No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la media de la profundidad de diamantes con color de mejor calidad es menor a la de los diamantes con color de peor calidad. Esto concordando también con los resultados del valor P, donde se tiene una aceptación fuerte de $H_{0}$.
 
 ## Prueba de hipótesis para una varianza
+
+Para este caso de hipótesis se estará usando como muestra la variable de quilates de el dataset diamantes
+
+```{r}
+quilates <- diamantes$quilate
+```
+| Muestra| Tamaño|
+|:--|:--|
+| Quilates| `r length(quilates)`|
+
+**Hipótesis asumidas**
+
+Antes de realizar el calculo es importante asumir que la muestra sigue una distribución normal
+
+**Cálculo**
+
+Sea:
+
+* $\sigma^2$: la varianza de la variable quilates de la muestra
+
+Y dadas las siguientes hipótesis para la prueba:
+
+* $H_{0}: \sigma =\sqrt{0.2246867} = 0.47401$
+* $H_{1}: \sigma ≠ 0.47401$
+
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de las siguientes funciones:
+
+```{r}
+sigma.test(x = quilates, sigma = 0.47401, alternative = "two.sided", conf.level = 0.95)
+```
+
+La función está compuesta de los siguientes parámetros, en donde:
+
+* **x:** vector numérico que representa la primera muestra
+* **sigma:** Es la desviación estandar de la muestra
+* **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
+* **conf.level:** Indica el nivel de confianza con el que se realiza la prueba
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Valor observado| 53939|
+| Grados de libertad| 53939|
+| Estadístico de prueba| $\s^{2}$|
+| Región de aceptación| ]0.2220290, 0.2273925[|
+| Región de rechazo| ]-$\infty$, 0.2220290[ $\cup$ ]0.2273925, +[$\infty$|
+| Nivel de confianza| 0.95|
+
+**Conclusiones**
+
+No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que la varianza de la muestra si es de 0.2246867, esto debido a que el valor de p Es muy cercano a 1 y porque qué valor dado por la función sobre la varianza muestral si se encuentra entre el intervalo ]0.2220290, 0.2273925[
