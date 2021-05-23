@@ -132,10 +132,10 @@ IC
 
 **Conclusiones**
 
-De los resultados obtenidos, se puede concluir que como la media de precios del dataset diamantes `r mean(poblacion.precios)` se encuentra en el intervalo ]`r IC`[ obtenido de tres librerías distintas, todo está correcto.
+De los resultados obtenidos se puede concluir que la media de precios del dataset diamante se encuentra en el intervalo ]`r IC`[, resultado que coincide en las tres librerías utilizadas.
 
 ## IC de un promedio usando distribución t
-A continuación, se presentan los Promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
+A continuación, se presentan los promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
 
 ```{r}
 ## Se toman filas random para sacar del dataset
@@ -152,7 +152,7 @@ alpha1 <- 0.05
 
 ```
 
-| Muestra| Tamaño| Promedio| Desviación estandar|
+| Muestra| Tamaño| Promedio| Desviación estándar|
 |:--|:--|:--|:--|
 | A| `r n1`| `r mu1`| `r de1`|
 
@@ -186,7 +186,7 @@ IC
 
 **Conclusión**
 
-De los resultados obtenidos, se puede concluir que como la media de precios del dataset de diamantes `r mean(as.data.frame(diamantes)$precio)` se encuentra en el intervalo ]`r IC`[, todo está correcto, aunque comparándolo con el IC de la distribución Z, este posee menor precisión debido a la poca cantidad de datos que fueron brindados.
+De los resultados obtenidos, se puede concluir que la media de precios del dataset de diamantes se encuentra en el intervalo ]`r IC`[. Además de esto, comparándolo con el IC de la distribución Z se puede observar que este posee menor precisión debido a la poca cantidad de datos que fueron brindados.
 
 ## IC de una proporción
 
@@ -435,16 +435,17 @@ P1
 
 Donde:
 
-* **Primer parametro:** primera muestra
+* **Primer parámetro:** primera muestra
 * **conf.level:** nivel de confidencia
 
 **Conclusión**
 
-Dando Como resultado el IC de varianza:
-]`r P1`[ , como podemos ver el intervalo es muy pequeño y esto se debe a que se usaron una gran cantidad de datos para realizar el cálculo, dando un resultado muy preciso.
+Dando como resultado el IC para la varianza de quilates:
+]`r P1`[, como podemos ver el intervalo es muy pequeño y esto se debe a que se usaron una gran cantidad de datos para realizar el cálculo, dando un resultado muy preciso.
 
 
 ## IC de un cociente de varianzas
+
 Gracias a la librería stests podemos realizar el cociente de varianza de dos poblaciones, para esto dividiremos el dataset de diamantes de dos poblaciones la primera contendrá los diamantes que tengan una alta claridad, teniendo como la más baja calidad posible para esta población VS1 y una segunda población que estará compuesta por los diamantes que tengan una claridad igual o inferior a VS2.
 
 
@@ -480,8 +481,8 @@ R
 
 Donde:
 
-* **Primer parametro:** primera muestra
-* **Segundo parametro:** segunda muestra
+* **Primer parámetro:** primera muestra
+* **Segundo parámetro:** segunda muestra
 * **conf.level:** nivel de confidencia
 
 **Conclusión**
@@ -512,7 +513,7 @@ En conclusión, al resultado obtenido podemos ver que las varianzas de estas dos
 
 ## Prueba de hipótesis para un promedio usando distribución Z
 
-Para este ejemplo se utilizarán dos grupos (los mismo utilizados para la prueba del IC para un promedio usando distribución Z). Utilizando todos los datos de la variable precio extraídos del dataset diamantes. Tal está distribuido de la siguiente manera:
+Para este ejemplo se utilizarán dos grupos (los mismos utilizados para la prueba del IC para un promedio usando distribución Z). Utilizando todos los datos de la variable precio extraídos del dataset diamantes. Tal está distribuido de la siguiente manera:
 
 ```{r}
 set.seed(4562) # semilla
@@ -572,14 +573,14 @@ PASWR2::z.test(
 
 Las funciones BSDA y PASWR2 aplican para una y dos poblaciones y están compuestas de los siguientes parámetros, en donde:
 
-* **x:** vector numérico que representa la primer muestra
+* **x:** vector numérico que representa la primera muestra
 * **sigma.x:** desviación estándar de x (opcional)
 * **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
 * **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
 
-En cambio las funciones de stests solo aplican para una población, la cual cuenta con los parámetros donde:
+En cambio, las funciones de stests solo aplican para una población, la cual cuenta con los parámetros donde:
 
-* **x:** vector numérico que representa la primer muestra
+* **x:** vector numérico que representa la primera muestra
 * **sigma2:** varianza de x (opcional)
 * **mu:** el valor de la media o la diferencia de medias en la hipótesis nula
 * **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
@@ -618,7 +619,7 @@ alpha1 <- 0.05
 
 ```
 
-| Muestra| Tamaño| Promedio| Desviación estandar|
+| Muestra| Tamaño| Promedio| Desviación estándar|
 |:--|:--|:--|:--|
 | A| `r n1`| `r mu1`| `r de1`|
 
@@ -645,7 +646,7 @@ Y dadas las siguientes hipótesis para la prueba:
 * $H_{0}: \mu_{p} = 4000$
 * $H_{1}: \mu_{p} > 4000$
 
-Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de la siguient función:
+Una vez obtenidos estos datos se procede a realizar la prueba de hipótesis haciendo uso de la siguiente función:
 
 
 ```{r}
@@ -701,7 +702,7 @@ prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), p = 0.12, alter
 
 ```
 
-Basado en la experiencia, un joyero afirma que mínimo el 12% de los diamantes de gama alta son de color tipo D
+Basado en la experiencia, un joyero afirma que mínimo el 12% de los diamantes de gama alta son de color tipo D.
 
 ¿Podemos aceptar la afirmación del joyero?
 
@@ -722,16 +723,12 @@ Su sintaxis es:
 donde:
 
 * **n** es el tamaño de la muestra.
-
 * **x** es el número de éxitos de la muestra.
-
 * **p** es la proporción poblacional que contrastamos.
-
 * **alternative** especifica la hipótesis alternativa, debe ser "two.sided", "greater" o "less". 
 * **conf.level** es el nivel de confianza.
 
-
-Para obtener el valor n se tomaron lo datos del dataset "Diamantes" donde se utilizó una muestra de la variable "corte" incluyendosen todos los diamantes cuyo corte sea de tipo "Premium" o "Ideal", siendo esta una muestra de diamantes de gama alta, de la siguiente manera:
+Para obtener el valor n se tomaron los datos del dataset "Diamantes" donde se utilizó una muestra de la variable "corte" incluyéndose todos los diamantes cuyo corte sea de tipo "Premium" o "Ideal", siendo esta una muestra de diamantes de gama alta, de la siguiente manera:
 
 
 ```{r}
@@ -748,7 +745,7 @@ tamañoMuestraGama
 
 
 
-Para obtener el valor x se incorporó la variable color del dataset "Diamantes" para saber cual es numero de diamantes que hay de corte "premium" o "Ideal" (que hemos llamado gama alta) de color tipo D, de la siguiente manera:
+Para obtener el valor x se incorporó la variable color del dataset "Diamantes" para saber cuál es el número de diamantes que hay de corte "premium" o "Ideal" (que hemos llamado gama alta) de color tipo D, de la siguiente manera:
 
 ```{r}
 exitos.alta <- gamaAlta[gamaAlta$color == "D",]
@@ -793,9 +790,9 @@ prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), p = 0.12, alter
 | Nivel de confianza| 0.95|
 
 
-Conclusion:
+**Conclusión:**
 
-\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente para rechazarlo, ya que según lo observado el 12 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa por lo que lo ubica en la region de aceptación, y por ende se asume como verdadera la afirmación del joyero.  
+\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente en contra, ya que según lo observado el 0.12 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa, por lo que lo ubica en la región de aceptación, y por ende se asume como verdadera la afirmación del joyero.  
 
 ## Prueba de hipótesis para una diferencia de proporciones
 
@@ -841,8 +838,7 @@ Su sintaxis es:
 donde:
 
 * **n** es un vector de dos entradas de los respectivos tamaños de las muestras.
-
-* **x** es el vector de dos numeros naturales que representan los éxitos ambas muestras.
+* **x** es el vector de dos números naturales que representan los éxitos ambas muestras.
 
 
 Es este ejercicio se contrastará si la proporción de diamantes de gama alta de color tipo D es la misma que la proporción de diamantes de gama baja de color tipo D
@@ -854,7 +850,7 @@ Para realizar esta prueba, se considerarán las siguientes hipótesis:
 \(H_{1}:p_{a}-p_{b} \neq 0\)
 
 
-Para obtener el valor n se tomaron dos muestras de la variable "corte", en la primera muestra se inculyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
+Para obtener el valor n se tomaron dos muestras de la variable "corte", en la primera muestra se incluyen todos los diamantes cuyo corte sea de tipo "Premium" ó "Ideal" (muestra de gama alta) y la segunda muestra donde se incluyen todos los diamantes cuyo corte sea de tipo "Regular" ó  "Bueno" (muestra de gama baja), de la siguiente manera:
 
 
 ```{r}
@@ -914,7 +910,7 @@ exitosBaja
 
 Antes de realizar las operaciones se debe verificar que np > 5 y nq > 5 para las dos poblaciones
 
-Para ello tenemos los siguientes datos para la primer población: 
+Para ello tenemos los siguientes datos para la primera población: 
 
 p1 = x1/n1 = 4437/35342 = 0.1255446777
 
@@ -948,18 +944,16 @@ prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(le
 | Dato| Valor|
 |:--|:--|
 | Valor observado| $z_{obs}$ = -0.0010667|
-| Grados de libertad| no corresponde|
+| Grados de libertad| No corresponde|
 | Estadístico de prueba| $\tilde{p_1}$ = 0.1255447  $\tilde{p_2}$ = 0.1266114|
 | Región de aceptación| ]-0.009939703, 0.007806222[|
 | Región de rechazo| ]-$\infty$, -0.009939703[ $\cup$ ]0.007806222, +$\infty$[|
 | Nivel de confianza| 0.95|
 
 
-Conclusion:
+**Conclusión:**
 
-\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente para rechazarlo, ya que segÚn lo observado el 0 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa por lo que lo ubica en la region de aceptación, y por ende se asume que la proporciÓn de diamantes de gama alta con color de tipo D se puede considerar similar a la proporciÓn de diamantes de gama baja con color de tipo D.   
-
-
+\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente para rechazarlo, ya que según lo observado el 0 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa por lo que lo ubica en la región de aceptación, y por ende se asume que la proporción de diamantes de gama alta con color de tipo D se puede considerar similar a la proporción de diamantes de gama baja con color de tipo D.   
 
 ## Prueba de hipótesis para una diferencia de promedios usando distribución z
 
@@ -980,7 +974,7 @@ length(peorCalidad$color)
 
 **Hipótesis asumidas**
 
-Dado que ambas muestras son mayores a 30 se puede asumir que ambas siguen una distribución normal y que se puede aproximar σ₁ y σ₂ mediante s₁  y s₂. Además ambos grupos son independientes.
+Dado que ambas muestras son mayores a 30 se puede asumir que ambas siguen una distribución normal y que se puede aproximar σ₁ y σ₂ mediante s₁  y s₂. Además, ambos grupos son independientes.
 
 **Cálculo**
 
@@ -1014,7 +1008,8 @@ Ambas funciones aplican para una y dos poblaciones y están compuestas de los si
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| $z_{obs}$|
+| Valor observado| $z_{obs} = -11.432$|
+| Grados de libertad| No corresponde|
 | Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
 | Región de aceptación| ]-0.1889905, +$\infty$[|
 | Región de rechazo| ]-$\infty$, -0.1889905[|
@@ -1099,7 +1094,7 @@ Donde:
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| $f_{obs}$|
+| Valor observado| $f_{obs} = 2.8255$|
 | Grados de libertad| $v_{b} = 24$ $v_{m} = 24$|
 | Estadístico de prueba| $\frac{s^{2}_{b}}{s^{2}_{m}}$|
 | Región de aceptación| ]1.245114, 6.411864[|
@@ -1139,7 +1134,7 @@ length(muestraPeorCalidad$color)
 
 **Hipótesis asumidas**
 
-Por el ejemplo anterior se puede asumir que ambas muestras siguen una distribución normal y que la varianzas son distintas.
+Por el ejemplo anterior se puede asumir que ambas muestras siguen una distribución normal y que las varianzas son distintas.
 
 **Cálculo**
 
@@ -1171,7 +1166,7 @@ La función está compuesta de los siguientes parámetros, en donde:
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| $t_{obs}$|
+| Valor observado| $t_{obs} = -0.64071$|
 | Grados de libertad| 39|
 | Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
 | Región de aceptación| ]-0.7404251, +$\infty$[|
@@ -1184,7 +1179,7 @@ No se encontró evidencia en contra $H_{0}$ por lo cual se puede asumir que la m
 
 ## Prueba de hipótesis para una varianza
 
-Para este caso de hipótesis se estará usando como muestra la variable de quilates de el dataset diamantes
+Para este caso de hipótesis se estará usando como muestra la variable de quilates del dataset diamantes
 
 ```{r}
 quilates <- diamantes$quilate
@@ -1195,7 +1190,7 @@ quilates <- diamantes$quilate
 
 **Hipótesis asumidas**
 
-Antes de realizar el calculo es importante asumir que la muestra sigue una distribución normal
+Antes de realizar el cálculo es importante asumir que la muestra sigue una distribución normal
 
 **Cálculo**
 
@@ -1217,7 +1212,7 @@ sigma.test(x = quilates, sigma = 0.47401, alternative = "two.sided", conf.level 
 La función está compuesta de los siguientes parámetros, en donde:
 
 * **x:** vector numérico que representa la primera muestra
-* **sigma:** Es la desviación estandar de la muestra
+* **sigma:** es la desviación estándar de la muestra
 * **alternative:** indica si la prueba es de cola izquierda (less), derecha (greater) o de dos colas (two.sided)
 * **conf.level:** Indica el nivel de confianza con el que se realiza la prueba
 
@@ -1225,13 +1220,13 @@ La función está compuesta de los siguientes parámetros, en donde:
 
 | Dato| Valor|
 |:--|:--|
-| Valor observado| 53939|
-| Grados de libertad| 53939|
-| Estadístico de prueba| $\s^{2}$|
+| Valor observado| $𝒳^{2}_{obs} = 53939$|
+| Grados de libertad| $v = 53939$|
+| Estadístico de prueba| $s^{2} = 0.2246867$|
 | Región de aceptación| ]0.2220290, 0.2273925[|
-| Región de rechazo| ]-$\infty$, 0.2220290[ $\cup$ ]0.2273925, +[$\infty$|
+| Región de rechazo| ]-$\infty$, 0.2220290[ $\cup$ ]0.2273925, +$\infty$[|
 | Nivel de confianza| 0.95|
 
 **Conclusiones**
 
-No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que la varianza de la muestra si es de 0.2246867, esto debido a que el valor de p Es muy cercano a 1 y porque qué valor dado por la función sobre la varianza muestral si se encuentra entre el intervalo ]0.2220290, 0.2273925[
+No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que la varianza de la muestra si es de 0.2246867, esto debido a que el valor de p es muy cercano a 1 y porque qué valor dado por la función sobre la varianza muestral si se encuentra entre el intervalo ]0.2220290, 0.2273925[
