@@ -85,7 +85,7 @@ var1 <- var(poblacion.precios)
 
 **Hipótesis asumidas** 
 
-Dado que la muestra es mayor a 30 se puede asumir que la población sigue una distribución normal y que se puede aproximar σ₁ mediante s₁.
+Dado que la muestra es mayor a 30 se puede asumir que la distribución muestral de medias sigue una distribución normal y que se puede aproximar σ₁ mediante s₁.
 
 **Cálculo**
 
@@ -132,7 +132,7 @@ IC
 
 **Conclusiones**
 
-De los resultados obtenidos se puede concluir que la media de precios del dataset diamante se encuentra en el intervalo ]`r IC`[, resultado que coincide en las tres librerías utilizadas.
+De los resultados obtenidos se puede concluir que la media de precios del dataset diamante se encuentra en el intervalo ]`r IC`[ con un 95% de confianza, resultado que coincide en las tres librerías utilizadas.
 
 ## IC de un promedio usando distribución t
 A continuación, se presentan los promedios usando distribución t de una población, utilizando muestras de la variable precio del dataset de diamantes.
@@ -186,7 +186,7 @@ IC
 
 **Conclusión**
 
-De los resultados obtenidos, se puede concluir que la media de precios del dataset de diamantes se encuentra en el intervalo ]`r IC`[. Además de esto, comparándolo con el IC de la distribución Z se puede observar que este posee menor precisión debido a la poca cantidad de datos que fueron brindados.
+De los resultados obtenidos, se puede concluir que la media de precios del dataset de diamantes se encuentra en el intervalo ]`r IC`[ con un 95% de confianza. Además de esto, comparándolo con el IC de la distribución Z se puede observar que este posee menor precisión debido a la poca cantidad de datos que fueron brindados.
 
 ## IC de una proporción
 
@@ -324,7 +324,7 @@ length(peorCalidad$color)
 
 **Hipótesis asumidas**
 
-Dado que ambas muestras son mayores a 30 se puede asumir que ambas siguen una distribución normal y que se puede aproximar σ₁ y σ₂ mediante s₁  y s₂.
+Dado que ambas muestras son mayores a 30 se puede asumir que la distribución muestral de medias sigue una distribución normal y se puede aproximar σ₁ y σ₂ mediante s₁  y s₂.
 
 **Cálculo**
 
@@ -440,7 +440,7 @@ Donde:
 
 **Conclusión**
 
-Dando como resultado el IC para la varianza de quilates:
+Dando como resultado el IC del 95% para la varianza de quilates:
 ]`r P1`[, como podemos ver el intervalo es muy pequeño y esto se debe a que se usaron una gran cantidad de datos para realizar el cálculo, dando un resultado muy preciso.
 
 
@@ -534,7 +534,7 @@ n1
 
 **Hipótesis asumidas**
 
-Dado que la muestra es mayor a 30 se puede asumir que la población sigue una distribución normal y que se puede aproximar σ₁ mediante s₁.
+Dado que la muestra es mayor a 30, debido a las condiciones del teorema del límite central, se puede asumir que la población sigue una distribución normal y que se puede aproximar σ₁ mediante s₁.
 
 
 **Cálculo**
@@ -792,7 +792,7 @@ prop.test(x=length(exitos.alta$color), n=length(gamaAlta$corte), p = 0.12, alter
 
 **Conclusión:**
 
-\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente en contra, ya que según lo observado el 0.12 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa, por lo que lo ubica en la región de aceptación, y por ende se asume como verdadera la afirmación del joyero.  
+\(H_{0}\) no puede ser rechazado dado que no se encontró evidencia suficiente en contra, ya que según lo observado el 0.12 se encuentra dentro del intervalo de aceptación y el valor p es mayor que el valor de alfa, por lo que lo ubica en la región de aceptación, y por ende se asume como válida la afirmación del joyero.  
 
 ## Prueba de hipótesis para una diferencia de proporciones
 
@@ -945,9 +945,9 @@ prop.test(x = c(length(exitos.alta$color) , length(exitos.baja$color)), n = c(le
 |:--|:--|
 | Valor observado| $z_{obs}$ = -0.0010667|
 | Grados de libertad| No corresponde|
-| Estadístico de prueba| $\tilde{p_1}$ = 0.1255447  $\tilde{p_2}$ = 0.1266114|
+| Estadístico de prueba| $\tilde{p_1}$ - $\tilde{p_2}$ = 0|
 | Región de aceptación| ]-0.009939703, 0.007806222[|
-| Región de rechazo| ]-$\infty$, -0.009939703[ $\cup$ ]0.007806222, +$\infty$[|
+| Región de rechazo| ]-1, -0.009939703[ $\cup$ ]0.007806222, +1[|
 | Nivel de confianza| 0.95|
 
 
@@ -1010,7 +1010,7 @@ Ambas funciones aplican para una y dos poblaciones y están compuestas de los si
 |:--|:--|
 | Valor observado| $z_{obs} = -11.432$|
 | Grados de libertad| No corresponde|
-| Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
+| Estadístico de prueba| $\tilde{x}_b$ - $\tilde{x}_m$ = 0|
 | Región de aceptación| ]-0.1889905, +$\infty$[|
 | Región de rechazo| ]-$\infty$, -0.1889905[|
 | Nivel de confianza| 0.95|
@@ -1096,7 +1096,7 @@ Donde:
 |:--|:--|
 | Valor observado| $f_{obs} = 2.8255$|
 | Grados de libertad| $v_{b} = 24$ $v_{m} = 24$|
-| Estadístico de prueba| $\frac{s^{2}_{b}}{s^{2}_{m}}$|
+| Estadístico de prueba| $\frac{s^{2}_{b}}{s^{2}_{m}}=0$|
 | Región de aceptación| ]1.245114, 6.411864[|
 | Región de rechazo| ]-$\infty$, 1.245114[$\cup$]6.411864, +$\infty$[|
 | Nivel de confianza| 0.95|
@@ -1168,7 +1168,7 @@ La función está compuesta de los siguientes parámetros, en donde:
 |:--|:--|
 | Valor observado| $t_{obs} = -0.64071$|
 | Grados de libertad| 39|
-| Estadístico de prueba| $\tilde{x}_b$ y $\tilde{x}_m$|
+| Estadístico de prueba| $\tilde{x}_b$ - $\tilde{x}_m$ = 0|
 | Región de aceptación| ]-0.7404251, +$\infty$[|
 | Región de rechazo| ]-$\infty$, -0.7404251[|
 | Nivel de confianza| 0.95|
@@ -1230,3 +1230,4 @@ La función está compuesta de los siguientes parámetros, en donde:
 **Conclusiones**
 
 No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que la varianza de la muestra si es de 0.2246867, esto debido a que el valor de p es muy cercano a 1 y porque qué valor dado por la función sobre la varianza muestral si se encuentra entre el intervalo ]0.2220290, 0.2273925[
+
