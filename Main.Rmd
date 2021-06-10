@@ -1231,3 +1231,121 @@ La función está compuesta de los siguientes parámetros, en donde:
 
 No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que la varianza de la muestra si es de 0.2246867, esto debido a que el valor de p es muy cercano a 1 y porque qué valor dado por la función sobre la varianza muestral si se encuentra entre el intervalo ]0.2220290, 0.2273925[
 
+# IV Parte: Otras pruebas de hipótesis en R
+
+## Caso 1:
+
+1. Gráficos
+
+2. Gráfico QQ-plot
+
+3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+
+4. D'Agostino-Pearson
+
+5. Análisis de custoris y simetría de los datos
+
+## Caso 2:
+
+1. Gráficos
+
+2. Gráfico QQ-plot
+
+3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+
+4. D'Agostino-Pearson
+
+5. Análisis de custoris y simetría de los datos
+
+## Resumen casos 1 y 2
+
+| Tipo de prueba| Niños| Niñas| Medidas de biceps|
+|:--|:--|:--|:--|
+| Función de densidad versus curva normal| Anote lo observado| Anote lo observado| Anote lo observado|
+| Conclusión| | | |
+| QQ-Plot| Anote lo observado| Anote lo observado| Anote lo observado|
+| Conclusión| | | |
+| S-W test| Valor P| Valor P| Valor P|
+| Conclusión| | | |
+| A-D test| Valor P| Valor P| Valor P|
+| Conclusión| | | |
+| D'Agostino-Pearson| Valor P| Valor P| Valor P|
+| Conclusión| | | |
+| Curtosis y simetría| Valor P| Valor P| Valor P|
+| Conclusión| | | |
+| Conclusión general sobre normalidad de los datos| | | |
+
+## Caso 3:
+
+La siguiente tabla resume los datos de obtenidos de víctimas de crímenes elegidas al azar (según datos del Departamento de Justicia de USA):
+
+| Descripción| HOMICIDIO| ROBO| ASALTO|
+|:--|:--|:--|:--|
+| El criminal era un extraño| 12| 379| 727|
+| El criminal era un conocido o pariente| 39| 106| 642|
+
+Con los datos anteriores, ¿sería posible considerarque el tipo de delito es independiente de la condición del delincuente?, o por el contrario, ¿existe alguna relación entre el tipo de delito con respecto al quien comete el acto? Se asumen un nivel de significancia de 5%.
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Tipo de prueba a utilizar| Valor|
+| Valor observado| Valor|
+| Grados de libertad y qué representan| Valor|
+| Valor P| Valor|
+| $H_{0}$| Valor|
+| $H_{1}$| Valor|
+
+**Conclusión**
+
+## Caso 4:
+
+Considerando la siguiente situación
+
+La seguridad de los automóviles se determina mediante diversas pruebas. Una de ellas  consiste en hacer chocar un automóvil contra una barrera fija a 35 𝑚𝑖/ℎ con un maniquí colocado en el asiento del conductor.
+A una de las medidas utilizadas para cuantificar el impacto del choque sobre el conductor se le conoce como **Desaceleración de pecho** y se mide en unidades de fuerza de gravedad (𝑔). Los valores más grandes indican mayores cantidades de desaceleración, las cuáles pueden provocar lesiones graves en los conductores. La siguiente tabla muestra mediciones de desaceleraciones de pecho obtenidas a partir de pruebas de choques de diferentes tipos de vehículos:
+
+| Autos compactos| Autos medianos| Autos grandes|
+|:--|:--|:--|
+| 44| 41| 32|
+| 43| 49| 37|
+| 44| 43| 38|
+| 54| 41| 45|
+| 38| 47| 37|
+| 43| 44| 33|
+| 42| 37| 38|
+| 45| 34| 45|
+| 50|   | 43|
+|   |   | 42|
+
+Con los datos anteriores, ¿es posible considerar que el tamaño del automóvil puede variar en cuanto a la seguridad de sus pasajeros o por el contrario, es igualmente riesgoso? Se asume un nivel de significancia del 5%.
+
+**Resumen de la prueba**
+
+| Dato| Valor|
+|:--|:--|
+| Tipo de prueba a utilizar| Valor|
+| Valor observado| Valor|
+| Grados de libertad y qué representan| Valor|
+| SSE| Valor|
+| SSA| Valor|
+| SST| Valor|
+| $S_{1}^{2}$ y $S_{2}^{2}$| Valor|
+| Valor P| Valor|
+| $H_{0}$| Valor|
+| $H_{1}$| Valor|
+
+**Conclusión**
+
+En caso de detectar alguna diferencia en cuanto a la seguridad que puede brindar al tamaño del vehículo, ¿es posible en cuáles existe una verdadera diferencia significativa?
+
+# V Parte: Modelos de regresión lineal
+
+## Caso 5:
+
+## Caso 6:
+
+# VI Parte: Modelos de regresión no lineal
+
+## Caso 7:
