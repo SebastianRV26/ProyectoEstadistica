@@ -1391,7 +1391,7 @@ Para esto se hará uso del coeficiente de correlación y el coeficiente de deter
 
 ```{r}
 ## Cálculo del coeficiente de determinación
-summary(lm(modelo))$r.squared
+summary(modelo)$r.squared
 
 ## Cálculo del coeficiente de correlación
 sqrt(summary(modelo)$r.squared)
@@ -1479,3 +1479,103 @@ Como en la pendiente el valor P es menor a 0.05 se rechaza $H_0$ por lo que se p
 # VI Parte: Modelos de regresión no lineal
 
 ## Caso 7:
+
+Para esta sección se van a generar y analizar dos modelos de RNLS usando los datos de bones de la base de datos jaws, la cual contiene información sobre la longitud de la mandíbula de los venados, según la edad.
+
+### 1. Cargar los datos del archivo de texto.
+
+```{r}
+jaws <- read.table("jaws.txt", header=T)
+```
+
+### 2. Gráfico de dispersión de los datos.
+
+```{r}
+ggplot(jaws, aes(x = age, y = bone)) + geom_point()
+```
+
+### 3. Generar modelo RNLS
+
+Para esta parte se generará un modelo RNLS de la forma $y=a(1- e^{-c x })$, para ello se hará uso de la función nlm() del paquete stats y se usarán como valores iniciales a = 120 y c = 0.064.
+
+```{r}
+modelo1 <- nls(bone~a*(1-exp(-c*age)), data = jaws, start = list(a=120, c=0.064))
+modelo1
+```
+
+### Gráfico del modelo.
+
+Ahora se procederá a realizar un gráfico del modelo anterior junto al de dispersión:
+
+```{r}
+xo <- seq(from = min(jaws$age) - 0.2, to = max(jaws$age) + 0.2, by = 0.01)
+yo <- 120 * (1 - exp(-0.064 - xo))
+
+# Graficamos dispersión y el modelo de ajuste en un mismo plot
+plot(jaws$age, jaws$bone, main = "Modelo de RNLS f(x)=a(1- e^{-c x })", col = "darkblue", lwd = 2)
+lines(xo, yo, type = "l")
+```
+
+### 5. Segundo modelo (selección del modelo).
+
+Para este punto se hará un segundo modelo. Considerando que la gráfica tiene una asintota alrededor de 120 en el eje X y que parece tener también una menor que 0 en el eje Y (ya que ya hay un punto que toca 0) se decidirá por utilizar el modelo el modelo hiperbólico ya que este contiene asintotas en ambos ejes y permite más libertad en el posicionamiento de estas.
+
+### 6. Linealización del segundo modelo.
+
+En está parte se hara una estimación de los parámetros $\alpha$ y $\beta$ a través de un proceso de lineación a partir de un modelo RLS, para esto se hara uso una vez más de la función lm haciendo la sistitución de variables respectiva, que es la siguiente:
+
+$X_2 = \frac{1}{X}$ y $Y_2 = \frac{1}{Y}$
+
+Teniendo en cuenta esto último se procede a realizar el RLS:
+
+```{r}
+X2 <- 1/jaws$age
+Y2 <- 1/jaws$bone
+datoslm <- cbind(X2, Y2)
+datoslm.df <- as.data.frame(datoslm)
+
+## Se eliminan los infinitos del caso 0/0
+datoslm.df <- datoslm.df[!is.infinite(rowSums(datoslm.df)),]
+modelolm <- lm(Y2 ~ X2, data = datoslm.df)
+modelolm
+```
+
+Se tiene que:
+
+$\alpha = 0.00523$ y $\beta = 0.10339$
+
+### 7. Creación del segundo RNLS.
+
+A partir de la estimación anterior de $\alpha$ y $\beta$ se procederá a utilizar la función nls para generar un segundo modelo RNLS utilizando $\alpha$ y $\beta$ como los valores iniciales
+
+```{r}
+modelo2 <- nls(bone~(age)/(a*age+b), data = jaws, start = list(a=0.00523, b=0.10339))
+modelo2
+```
+
+Finalmente se tiene que la ecuación de RNLS es:
+
+$y = \frac{x}{0.007261x+0.053404}$
+
+### 8. Gráfico del segundo modelo RNLS.
+
+En este punto se procede a realizar un gráfico del modelo generado en el paso anterior de la siguiente manera:
+
+```{r}
+xo <- seq(from = min(jaws$age) - 0.2, to = max(jaws$age) + 0.2, by = 0.01)
+yo <- xo / (0.007261 * xo + 0.053404)
+
+# Graficamos dispersión y el modelo de ajuste en un mismo plot
+plot(jaws$age, jaws$bone, main = "Modelo de RNLS f(x)=a(1- e^{-c x })", col = "darkblue", lwd = 2)
+lines(xo, yo, type = "l")
+```
+
+### 9. Comparación de ambos modelos.
+
+En este punto se comparán ambos modelos con el fin de cuantificar cual es mejor, para esto se hara uso de la función anova del paquete stats de R.
+
+```{r}
+anova(modelo1, modelo2)
+```
+
+En este caso bajo el criterio de análisis de varianzas el modelo 1 resulto ser el mejor ya que tiene un RSS menor. Sin embargo, esto parece no coincidir con la gráficas ya que parece ser que la gráfica del modelo 2 se ajusta mejor a los datos en comparación a la del modelo 1.
