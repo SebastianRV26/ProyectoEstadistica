@@ -25,6 +25,8 @@ library(PASWR2)
 library(TeachingDemos)
 library(corrplot)
 library(nortest)
+library(bbmle)
+library(DALEX)
 ```
 
 # I Parte: explicación de los datos
@@ -1475,6 +1477,134 @@ summary(modelo)
 Como en la pendiente el valor P es menor a 0.05 se rechaza $H_0$ por lo que se puede asumir que la pendiente es distinta de 0 lo que significa que hay linealidad y que hay dependencia lineal entre las variables grasas y edad.
 
 ## Caso 6:
+
+```{r}
+ventasdb <- read.csv("DatosVentas.csv", , header = TRUE)
+ventasdb
+```
+
+**Generación de los modelos**
+
+##Regresion Lineal Simple
+#1
+```{r}
+mod0 <- lm(ventas ~ tv, data = ventas)
+mod0
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 7.03259 + 0.04754 * tv
+
+##Regresion Lineal Multiple
+#2
+```{r}
+mod1 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio+ventasdb$periodico)
+mod1
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico
+
+Tras optener los coeficientes podemos concluir que los que aportan a modelo son los de la variable tv y radio ya que estos son positivos, en cambio el de periodico al ser negativo mas bien esta restando al modelo.
+
+#3
+```{r}
+mod2 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio)
+mod2
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio
+
+En este caso los coeficientes muestran que ambos son significativos, sin embargo el de tv es muy poco ya que es muy cercano al valor 0.
+
+#4
+```{r}
+
+mod3 <- lm(ventasdb$ventas ~ ventasdb$tv + ventasdb$radio + (ventasdb$tv*ventasdb$radio))
+mod3
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)
+
+Tras optener los resultados podemos ver que todos los coeficientes obtenidos son significativos ya que todos son positivos, siendo el menos significativo de todos el de tv * radio ya que es el mas cercano a 0
+
+**Seleccionando el mejor modelo**
+
+```{r}
+## Cálculo del coeficiente de determinación mod0
+cd0 <- summary(lm(mod0))$r.squared
+
+## Cálculo del coeficiente de correlación mod0
+cc0 <- sqrt(summary(mod0)$r.squared)
+
+## Cálculo del coeficiente de determinación mod1
+cd1 <- summary(lm(mod1))$r.squared
+
+## Cálculo del coeficiente de correlación mod1
+cc1 <- sqrt(summary(mod1)$r.squared)
+
+## Cálculo del coeficiente de determinación mod2
+cd2 <- summary(lm(mod2))$r.squared
+cd2
+
+## Cálculo del coeficiente de correlación mod2
+cc2 <- sqrt(summary(mod2)$r.squared)
+cc2
+
+## Cálculo del coeficiente de determinación mod3
+cd3 <- summary(lm(mod3))$r.squared
+
+## Cálculo del coeficiente de correlación mod3
+cc3 <- sqrt(summary(mod3)$r.squared)
+```
+
+#1
+| Ecuación del modelo| Coeficiente de correlación| Coeficiente de determinación|
+|:--|:--|:--|
+| ventas = 7.03259 + 0.04754 * tv|`r cc0` | `r cd0`|
+| ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico| `r cc1`| `r cd1`|
+| ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio| `r cc2`| `r cd2`|
+| ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)| `r cc3`| `r cd3`|
+
+#2
+Se tiene que para el modelo mod2 $R =$ `r cc2`, esto significa que la correlación lineal entre las ventas y tv, radio es positiva y moderada. Por otra parte, se tiene que $R^{2} =$ `r cd2`, de esto se interpreta que el 94.72% de variación en las venta se debe a la tv, radio y el restante 7.28% es por otros factores.
+
+#3
+```{r}
+AICctab(mod0, mod1, mod2, mod3, base = T, delta = T, sort = T, weights = T, nobs = ncol(ventasdb))
+
+```
+Como podemos ver tras ejecutar la funcion el mejor modelo corresponde al mod3 con un puntaje de 490.3, luego mod1 con 722.4 en tercer lugar mod0 con 1068.1 y por ultimo mod2 que tiene un Inf.
+
+#4
+Como primer paso creamos los Explain Model
+```{r}
+exp_lm0 <- explain(mod0, data = ventasdb, label = "lm1", y = ventasdb$ventas)
+exp_lm2 <- explain(mod2, data = ventasdb, label = "lm2", y = ventasdb$ventas)
+exp_lm3 <- explain(mod3, data = ventasdb, label = "lm3", y = ventasdb$ventas)
+```
+
+Como segundo paso creamos los Performance Model
+```{r}
+lm0 <- model_performance(exp_lm0)
+lm2 <- model_performance(exp_lm2)
+lm3 <- model_performance(exp_lm3)
+```
+
+Por ultimo graficamos los modelos
+```{r}
+plot(lm0,lm2, lm3)
+```
+Como podemos ver en el gráfico el mejor modelo el el mod3 ya que presenta la curva mas baja de la grafica, como segundo mejor modelo el mod2 y como peor modelo el mod1, este criterio tiene sentido ya que ......... terminar
+
+#5
+Análisis de varianza
+```{r}
+anova(mod0,mod1, mod2, mod3)
+```
+
 
 # VI Parte: Modelos de regresión no lineal
 
