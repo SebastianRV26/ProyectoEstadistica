@@ -1,11 +1,11 @@
 ---
-title: "Proyecto de estadística: Etapa 2"
+title: "Proyecto de estadística: Etapa 3"
 author: 
   - Sebastián Rojas Vargas
   - Francisco Soto Quesada
   - Jairo Pacheco Campos
   - Jason Barrantes Rodríguez
-date: "17/4/2021"
+date: "10/06/2021"
 output: word_document
 ---
 
@@ -23,6 +23,10 @@ library(stats)
 library(BSDA)
 library(PASWR2)
 library(TeachingDemos)
+library(mosaicData) # para usar KidsFeet
+library(nortest) # para usar A-D, S-W, K-S-L test
+library(fBasics) # para usar D’Agostino-Pearson
+library(moments) # para custoris y simetría
 ```
 
 # I Parte: explicación de los datos
@@ -1235,45 +1239,256 @@ No se encontró evidencia en contra de $H_{0}$ por lo cual se puede asumir que l
 
 ## Caso 1:
 
+Para este caso se utilizará la base de datos KidsFeet del paquete mosaicData:
+
+```{r}
+str(KidsFeet)
+```
+
+```{r}
+feetsplit <- split(KidsFeet$length, KidsFeet$sex)
+
+str(feetsplit)
+```
+Como pudimos observar, la función split dividió la base de datos en dos, con B para los niños y G para las niñas, se procederá a almacenarla en las siguientes variables:
+
+```{r}
+boys.feets <- feetsplit$B
+girls.feets <- feetsplit$G
+```
+
 1. Gráficos
+
+Debido a que los tamaños de las muestras de los niños es de 20 y el de las niñas de 19, se pueden crear distinas gráficas para determinar si dicha muestra sigue una distribución normal.A continuación se presentan los gráficos de densidad 
+
+```{r}
+ggdensity(
+  boys.feets, 
+  main = "Gráfico de densidad de los niños",
+  xlab = "Tamaño del largo de los pies en centímetros"
+)
+```
+
+```{r}
+ggdensity(
+  girls.feets, 
+  main = "Gráfico de densidad de las niñas",
+  xlab = "Tamaño del largo de los pies en centímetros"
+)
+```
+
+```{r}
+mean(boys.feets)
+mean(girls.feets)
+```
+
+**¿Se puede intuir una posible normalidad para los datos?**
+
+Como se puede observar, probablemente exista normalidad en ambas muestras de datos, ya que parece ser que la gráfica tiene forma de campana, además, en ambos casos la punta de la gráfica se encuentra muy cerca de la media.
+
 
 2. Gráfico QQ-plot
 
+A continuación se presentan los gráficos de QQ-plot;
+
+```{r}
+qqnorm(boys.feets, ylab = "Largo del pie", main = "Gráfico QQ Plot de los niños")
+qqline(boys.feets)
+```
+```{r}
+qqnorm(girls.feets, ylab = "Largo del pie", main = "Gráfico QQ Plot de las niñas")
+qqline(girls.feets)
+```
+
+En ambos casos, parece ser que el conjunto de datos no parece seguir una distribución normal, especialmente cerca de las colas.
+
 3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+
+**Test de Shapito-Wilks o S-W test**
+
+```{r}
+boys.sw <- shapiro.test(boys.feets)
+boys.sw
+
+girls.sw <- shapiro.test(girls.feets)
+girls.sw
+```
+Para ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
+
+**Test de normalidad de Anderson-Darling o A-D test**
+
+```{r}
+boys.ad <- ad.test(boys.feets)
+boys.ad
+
+girls.ad <- ad.test(girls.feets)
+girls.ad
+```
+En ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
+
+**Test de Kolmogorov-Smirnov-Lilliefors o K-S-L test**
+
+```{r}
+boys.ksl <- lillie.test(boys.feets)
+boys.ksl
+
+girls.ksl <- lillie.test(girls.feets)
+girls.ksl
+```
+En ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
 
 4. D'Agostino-Pearson
 
+Para realizar esta prueba, es necesario saber que el tamaño de la muestra obligatoriamente debe de ser de tamaño 20 o superior, por ende, no es posible realizar la prueba para el caso del tamaño de las niñas debido a que dicha muestra es de tamaño 19. Sabiendo esto, se procede a realizar la prueba para el tamaño de la muestra en general y luego para la muestra de los niños:
+
+```{r}
+dagoTest(KidsFeet$length)
+boys.dap <- dagoTest(boys.feets)
+boys.dap
+```
+No se encontró evidencia en contra para asumir normalidad, debido a que el valor p general (Omnibus) es mayor que el nivel de significancia (0.05).
+
 5. Análisis de custoris y simetría de los datos
+
+A continuación se mostrarán los análisis de custoris en niños y niñas para el tamaño de la planta del pie:
+
+```{r}
+boys.kurtosis <- moments::kurtosis(boys.feets) # curtosis en niños
+boys.kurtosis
+
+girls.kurtosis <- moments::kurtosis(girls.feets) # curtosis en niñas
+girls.kurtosis
+```
+
+Como podemos observar, ambos resultados fueron mayores que cero, por lo que se puede concluir que ambos tienden a ser leptocúrtica, es decir, su campana es alargada y muy punteada, con unas colas muy bajas.
+
+A continuación se mostrarán los análisis de simetría en niños y niñas para el tamaño de la planta del pie:
+
+```{r}
+boys.skewness <- moments::skewness(boys.feets) # simetria en niños
+boys.skewness
+
+girls.skewness <- moments::skewness(girls.feets) # simetria en niñas
+girls.skewness
+```
+
+De la simetría se puede concluir que ambas gráficas son simétricas, aunque en el caso de los niños, al ser positivo, su media está un poco más inclinada hacia la izquierda, y en las niñas ocurre lo contrario, al ser negativo pero acercándose a 0, su media está ligeramente más inclinada hacia la derecha.
+
 
 ## Caso 2:
 
+Para este caso se utilizará la base de datos medidas_cuerpo de la siguiente url:
+
+```{r}
+url <- 'https://raw.githubusercontent.com/fhernanb/datos/master/medidas_cuerpo' 
+body <- read.table(file=url, header=T)
+
+str(body)
+```
+
+```{r}
+biceps <- body$biceps
+str(biceps)
+```
+
 1. Gráficos
+
+A continuación se presentan los gráficos de densidad para el tamaño de los biceps:
+
+```{r}
+ggdensity(
+  biceps, 
+  main = "Gráfico de densidad de los biceps",
+  xlab = "Tamaño del largo de los biceps en centímetros"
+)
+```
+
+Se puede observar que la gráfica no tiene forma de campana y cerca de la media no existe un punto máximo, por lo que se concluye que dicha muestra no sigue una distribución normal.
 
 2. Gráfico QQ-plot
 
+A continuación se presentan los gráficos de QQ-plot, es importante saber que se utilizarán las edades para que así el gráfico del tamaño de los biceps tenga sentido:
+
+```{r}
+#qqplot(biceps, body$edad, xlab = "Tamaño de los biceps", ylab = "Edad de la persona", main = "Gráfico QQ Plot de los biceps")
+qqnorm(biceps, ylab = "Tamaño de los biceps", main = "Gráfico QQ Plot del tamaño de los biceps")
+qqline(biceps)
+```
+
+Se puede observar que el conjunto de datos no parece seguir una distribución normal, especialmente en las colas y en el centro de la gráfica.
+
 3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+
+**Test de Shapito-Wilks o S-W test**
+
+```{r}
+biceps.sw <- shapiro.test(biceps)
+biceps.sw
+```
+
+Se encontró evidencia en contra para asumir normalidad, debido a que el valor p es menor que el nivel de significancia de 0.05.
+
+**Test de normalidad de Anderson-Darling o A-D test**
+
+```{r}
+biceps.ad <- ad.test(biceps)
+biceps.ad
+```
+Se encontró evidencia en contra para asumir normalidad, debido a que el valor p es menor que el nivel de significancia de 0.05.
+
+**Test de Kolmogorov-Smirnov-Lilliefors o K-S-L test**
+
+```{r}
+biceps.ksl <- lillie.test(biceps)
+biceps.ksl
+```
+Se encontró evidencia en contra para asumir normalidad, debido a que el valor p es menor que el nivel de significancia de 0.05.
 
 4. D'Agostino-Pearson
 
+```{r}
+biceps.dap <- dagoTest(biceps)
+biceps.dap
+```
+Se encontró evidencia en contra para asumir normalidad, debido a que el valor p general (Omnibus) es menor que el nivel de significancia de 0.05.
+
 5. Análisis de custoris y simetría de los datos
+
+A continuación se mostrarán el análisis de custoris para el tamaño de los biceps:
+
+```{r}
+biceps.kurtosis <- moments::kurtosis(biceps) # curtosis de los biceps
+biceps.kurtosis
+```
+
+Como se puede observar, el resultado fue mayor a cero, por lo que se puede concluir que tiende a ser leptocúrtica, es decir, su campana es alargada y muy punteada, con unas colas muy bajas.
+
+A continuación se mostrará el análisis de simetría para el tamaño de los biceps:
+
+```{r}
+biceps.skewness <- moments::skewness(biceps) # simetria en medida de biceps
+biceps.skewness
+```
+
+De la simetría se puede concluir la gráficas es simétrica, aunque, al ser positivo, su media está un poco más inclinada hacia la izquierda.
 
 ## Resumen casos 1 y 2
 
 | Tipo de prueba| Niños| Niñas| Medidas de biceps|
 |:--|:--|:--|:--|
-| Función de densidad versus curva normal| Anote lo observado| Anote lo observado| Anote lo observado|
-| Conclusión| | | |
-| QQ-Plot| Anote lo observado| Anote lo observado| Anote lo observado|
-| Conclusión| | | |
-| S-W test| Valor P| Valor P| Valor P|
-| Conclusión| | | |
-| A-D test| Valor P| Valor P| Valor P|
-| Conclusión| | | |
-| D'Agostino-Pearson| Valor P| Valor P| Valor P|
-| Conclusión| | | |
-| Curtosis y simetría| Valor P| Valor P| Valor P|
-| Conclusión| | | |
-| Conclusión general sobre normalidad de los datos| | | |
+| Función de densidad versus curva normal| Parece tener forma de campana| Parece tener forma de campana| No tiene forma de campana|
+| Conclusión| Se concluye que sigue una dist. normal| Se concluye que sigue una dist. normal| Se concluye que no sigue una dist. normal|
+| QQ-Plot| En las colas y el centro de la gráfica los datos están más alejados de la linea.| En las colas y el centro de la gráfica los datos están más alejados de la linea.| En las colas y el centro de la gráfica los datos están más alejados de la linea.|
+| Conclusión| No parece seguir una distribución normal| No parece seguir una distribución normal| No parece seguir una distribución normal|
+| S-W test| Valor P=`r round(boys.sw$p.value, 4)`| Valor P=`r round(girls.sw$p.value, 4)`| Valor P=`r round(biceps.sw$p.value, 4)`|
+| Conclusión| Se asume normalidad; valor p > 0.05 (significancia)| Se asume normalidad; valor p > 0.05 (significancia)| NO se asume normalidad; valor p < 0.05 (significancia)|
+| A-D test| Valor P=`r round(boys.ad$p.value, 4)`| Valor P=`r round(girls.ad$p.value, 4)`| Valor P=`r round(biceps.ad$p.value, 4)`|
+| Conclusión| Se asume normalidad; valor p > 0.05 (significancia)| Se asume normalidad; valor p > 0.05 (significancia)| NO se asume normalidad; valor p < 0.05 (significancia)|
+| D'Agostino-Pearson| Valor P=0.7267| Valor P=NA| Valor P=0.00108|
+| Conclusión| Se asume normalidad; valor p > 0.05 (significancia)| No aplica, n=19 y se requiere mínimo 20| NO se asume normalidad; valor p < 0.05 (significancia)|
+| Curtosis y simetría| `r round(boys.kurtosis, 4)` y `r round(boys.skewness, 4)`| `r round(girls.kurtosis, 4)` y `r round(girls.skewness, 4)`| `r round(biceps.kurtosis, 4)` y `r round(biceps.skewness, 4)`|
+| Conclusión| Leptocúrtica y simétrica| Leptocúrtica y simétrica| Leptocúrtica y simétrica|
+| Conclusión general sobre normalidad de los datos| Se asume normalidad ya que a pesar de que gráficamente no lo parezca, el valor p es un dato más acertado que el factor visual| Se asume normalidad ya que a pesar de que gráficamente no lo parezca, el valor p es un dato más acertado que el factor visual| NO se asume normalidad|
 
 ## Caso 3:
 
