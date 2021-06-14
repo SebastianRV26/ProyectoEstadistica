@@ -27,6 +27,9 @@ library(mosaicData) # para usar KidsFeet
 library(nortest) # para usar A-D, S-W, K-S-L test
 library(fBasics) # para usar D’Agostino-Pearson
 library(moments) # para custoris y simetría
+library(corrplot)
+library(bbmle)
+library(DALEX)
 ```
 
 # I Parte: explicación de los datos
@@ -1559,7 +1562,263 @@ En caso de detectar alguna diferencia en cuanto a la seguridad que puede brindar
 
 ## Caso 5:
 
+Primeramente se cargan los datos de **EdadPesoGrasas.txt** como se muestra a continuación:
+
+```{r}
+grasas <- read.table('http://verso.mat.uam.es/~joser.berrendero/datos/Eda
+dPesoGrasas.txt', header = TRUE)
+```
+
+Con estos datos se proceden a realizar los siguientes puntos de un análisis de regresión lineal:
+
+### 1. Analisis de correlación entre todas la variables.
+
+Para esto se hace uso de la función cor del paquete stats de R, con la cual se puede resumir de manera muy sencilla todos los posibles casos de correlación en una matriz:
+
+```{r}
+c <- cor(grasas)
+c
+```
+
+Adicional a esta matriz, también se puede hacer uso de la función corrplot del paquete del mismo nombre. Esta función permite representar los datos de la matriz anterior de una manera más intuitiva.
+
+```{r}
+corrplot(c)
+```
+
+De este gráfico se puede observar que conforme los datos están más lejos 0 los cículos son más grandes, esto indica que existe una correlación entre las variables. En caso de que el color sea azul significa que es una correlación positiva y si es rojo es una correlación negativa. Por ejemplo en el caso de las variables edad y grasas se tiene que hay correlación positiva que indica que el aumento de una se debe en gran parte debido a la otra.
+
+### 2. Genración de modelo RLS de mejor ajuste para dos variables con mayor coeficiente de correlación
+
+Para este punto se hará uso de la variables edad y grasas que fueron las que tuvieron un mayor coeficiente de variación según los datos del punto anterior.
+
+De esto se tiene que grasas será la variable Y de respuesta y que edad será la la variable X explicativa. A partir de estos datos se procede a generar el RLS haciendo uso de la función lm del paquete stats de R
+
+```{r}
+modelo <- lm(grasas ~ edad, data = grasas)
+modelo
+```
+
+De esto se tiene que el modelo de RLS sería grasas = 102.575 + 5.321*edad
+
+### 3. Análisis de la calidad del modelo generado
+
+Para esto se hará uso del coeficiente de correlación y el coeficiente de determinación. Se utilizará la función summary para extraer el parámetro r.squared del modelo cálculado previamente y posteriormente se hará el análisis de los coeficientes.
+
+```{r}
+## Cálculo del coeficiente de determinación
+summary(lm(modelo))$r.squared
+
+## Cálculo del coeficiente de correlación
+sqrt(summary(modelo)$r.squared)
+```
+
+Se tiene que $R = 0.8373534$, esto significa que la correlación lineal entre grasas y edad es positiva y moderada. Por otra parte, se tiene que $R^{2} = 0.7011607$, de esto se interpreta que el 70.11% de variación en las grasas se debe a la edad y el restante 29.89% es por otros factores.
+
+De todo esto se puede llegar a la conclusión de que el modelo tiene una calidad de moderada ya que hay un buen porcentaje otros factores que explican la variación de grasas y además el nivel de correlación no supera el 90%.
+
+### 4. Gráfico de dispersión y recta de mejor ajuste
+
+En este punto se genera un gráfico de RLS mediante el uso de la función geom_point del paquete ggplot2 de R:
+
+```{r}
+graficoGrasas <- ggplot(grasas, aes(edad, grasas))
+graficoGrasas + geom_point(alpha = 0.4) + geom_smooth(method = "lm")
+```
+
+Para un IC del 95% se puede visualizar que la calidad del modelo se encuentra en un nivel moderado, ya que a pesar de que hay varios puntos dentro de la zona del IC hay una cantidad similar que se encuentran por fuera. Esto concordando también con lo visualizado mediante los coeficiente de correlación y determinación.
+
+### 5. Prueba de normalidad de residuos
+
+Con el fin de verificar si el los datos pueden ajustarse de manera lineal, se procede a realizar una prueba para verificar si la distribución de los errores o residuos se comporta de manera normal. Para ello se hace uso de la función lillie.test del paquete nortest de R.
+
+```{r}
+b0 <- 102.575
+b1 <- 5.321
+
+grasas.estimada <- b0 + b1 * grasas$edad
+errores <- grasas.estimada - grasas$grasas
+lillie.test(errores)
+```
+
+Como el valor P es grande, no existe evidencia suficiente para rechazar la normalidad de los errores, por lo tanto se puede asumir la normalidad de los mismos, por lo que se cumple el principio.
+
+### 6. Intervalo de confianza de 95% para los coeficientes del modelo
+
+Con el objetivo de hallar los IC de los parametos $\beta_0$ y $\beta_1$, se hace uso de la función confint del paquete stats:
+
+```{r}
+confint(modelo,level = 0.95)
+```
+
+Entonces se tiene que $\beta_0$ está entre ]41.265155, 163.885130[ y $\beta_1$ ]3.822367, 6.818986[
+
+### 7. Para una edad de 27 años, se determinará un IC de 95% para 𝜇𝑌|𝑥=27 y un intervalo de predicción para los valores de Y asociados a dicha edad.
+
+Para el cálculo de estos dos parámetros se hace uso de la función predict.lm del paquete stats, la cual funciona tanto para intervalos de confidencia como de predicción.
+
+Primero se calcula el intervalo de confidencia:
+
+```{r}
+x0 <- data.frame(edad = 27)
+predict.lm(modelo, x0, interval = "confidence", level = 0.95)
+```
+
+Y se tiene que se encuentra entre ]220.6777, 271.7891[ con un nivel de confianza del 95%. Y significa que se espera que la media de grasa para una edad de 27 años se encuentre en ese intervalo el 95% de las veces.
+
+Luego se calcula el intervalo de predicción:
+
+```{r}
+x0 <- data.frame(edad = 27)
+predict.lm(modelo, x0, interval = "prediction", level = 0.95)
+```
+
+Y se tiene que el intervalo de predicción con IC del 95% es ]152.7653, 339.7015[, lo que significa que se espera que el valor de grasa para una edad de 27 años se encuentre en ese intervalo el 95% de las veces.
+
+### 8. Verificación de la linealidad entre las variables y de dependencia lineal entre estas.
+
+Primero se tiene las siguientes hipótesis:
+
+* $H_0: \beta=0$ (no hay linealidad)
+* $H_1: \beta≠0$
+
+Para probar la siguiente hipótesis se hará uso de de la función summary, esto con el obtener un resumen de los datos del modelo.
+
+```{r}
+summary(modelo)
+```
+
+Como en la pendiente el valor P es menor a 0.05 se rechaza $H_0$ por lo que se puede asumir que la pendiente es distinta de 0 lo que significa que hay linealidad y que hay dependencia lineal entre las variables grasas y edad.
+
 ## Caso 6:
+
+```{r}
+ventasdb <- read.csv("DatosVentas.csv", , header = TRUE)
+ventasdb
+```
+
+**Generación de los modelos**
+
+##Regresion Lineal Simple
+#1
+```{r}
+mod0 <- lm(ventas ~ tv, data = ventas)
+mod0
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 7.03259 + 0.04754 * tv
+
+##Regresion Lineal Multiple
+#2
+```{r}
+mod1 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio+ventasdb$periodico)
+mod1
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico
+
+Tras optener los coeficientes podemos concluir que los que aportan a modelo son los de la variable tv y radio ya que estos son positivos, en cambio el de periodico al ser negativo mas bien esta restando al modelo.
+
+#3
+```{r}
+mod2 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio)
+mod2
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio
+
+En este caso los coeficientes muestran que ambos son significativos, sin embargo el de tv es muy poco ya que es muy cercano al valor 0.
+
+#4
+```{r}
+
+mod3 <- lm(ventasdb$ventas ~ ventasdb$tv + ventasdb$radio + (ventasdb$tv*ventasdb$radio))
+mod3
+```
+Tras generar el modelo optenemos la ecuación:
+
+ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)
+
+Tras optener los resultados podemos ver que todos los coeficientes obtenidos son significativos ya que todos son positivos, siendo el menos significativo de todos el de tv * radio ya que es el mas cercano a 0
+
+**Seleccionando el mejor modelo**
+
+```{r}
+## Cálculo del coeficiente de determinación mod0
+cd0 <- summary(lm(mod0))$r.squared
+
+## Cálculo del coeficiente de correlación mod0
+cc0 <- sqrt(summary(mod0)$r.squared)
+
+## Cálculo del coeficiente de determinación mod1
+cd1 <- summary(lm(mod1))$r.squared
+
+## Cálculo del coeficiente de correlación mod1
+cc1 <- sqrt(summary(mod1)$r.squared)
+
+## Cálculo del coeficiente de determinación mod2
+cd2 <- summary(lm(mod2))$r.squared
+cd2
+
+## Cálculo del coeficiente de correlación mod2
+cc2 <- sqrt(summary(mod2)$r.squared)
+cc2
+
+## Cálculo del coeficiente de determinación mod3
+cd3 <- summary(lm(mod3))$r.squared
+
+## Cálculo del coeficiente de correlación mod3
+cc3 <- sqrt(summary(mod3)$r.squared)
+```
+
+#1
+| Ecuación del modelo| Coeficiente de correlación| Coeficiente de determinación|
+|:--|:--|:--|
+| ventas = 7.03259 + 0.04754 * tv|`r cc0` | `r cd0`|
+| ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico| `r cc1`| `r cd1`|
+| ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio| `r cc2`| `r cd2`|
+| ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)| `r cc3`| `r cd3`|
+
+#2
+Se tiene que para el modelo mod2 $R =$ `r cc2`, esto significa que la correlación lineal entre las ventas y tv, radio es positiva y moderada. Por otra parte, se tiene que $R^{2} =$ `r cd2`, de esto se interpreta que el 94.72% de variación en las venta se debe a la tv, radio y el restante 7.28% es por otros factores.
+
+#3
+```{r}
+AICctab(mod0, mod1, mod2, mod3, base = T, delta = T, sort = T, weights = T, nobs = ncol(ventasdb))
+
+```
+Como podemos ver tras ejecutar la funcion el mejor modelo corresponde al mod3 con un puntaje de 490.3, luego mod1 con 722.4 en tercer lugar mod0 con 1068.1 y por ultimo mod2 que tiene un Inf.
+
+#4
+Como primer paso creamos los Explain Model
+```{r}
+exp_lm0 <- explain(mod0, data = ventasdb, label = "lm1", y = ventasdb$ventas)
+exp_lm2 <- explain(mod2, data = ventasdb, label = "lm2", y = ventasdb$ventas)
+exp_lm3 <- explain(mod3, data = ventasdb, label = "lm3", y = ventasdb$ventas)
+```
+
+Como segundo paso creamos los Performance Model
+```{r}
+lm0 <- model_performance(exp_lm0)
+lm2 <- model_performance(exp_lm2)
+lm3 <- model_performance(exp_lm3)
+```
+
+Por ultimo graficamos los modelos
+```{r}
+plot(lm0,lm2, lm3)
+```
+Como podemos ver en el gráfico el mejor modelo el el mod3 ya que presenta la curva mas baja de la grafica, como segundo mejor modelo el mod2 y como peor modelo el mod1, este criterio tiene sentido ya que ......... terminar
+
+#5
+Análisis de varianza
+```{r}
+anova(mod0,mod1, mod2, mod3)
+```
+
 
 # VI Parte: Modelos de regresión no lineal
 
