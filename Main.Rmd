@@ -1702,7 +1702,7 @@ ventasdb
 ##Regresion Lineal Simple
 #1
 ```{r}
-mod0 <- lm(ventas ~ tv, data = ventas)
+mod0 <- lm(ventas ~ tv, data = ventasdb)
 mod0
 ```
 Tras generar el modelo optenemos la ecuación:
