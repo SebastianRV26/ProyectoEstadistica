@@ -1499,23 +1499,54 @@ La siguiente tabla resume los datos de obtenidos de víctimas de crímenes elegi
 
 | Descripción| HOMICIDIO| ROBO| ASALTO|
 |:--|:--|:--|:--|
-| El criminal era un extraño| 12| 379| 727|
-| El criminal era un conocido o pariente| 39| 106| 642|
+| **El criminal era un extraño**| 12| 379| 727|
+| **El criminal era un conocido o pariente**| 39| 106| 642|
 
 Con los datos anteriores, ¿sería posible considerarque el tipo de delito es independiente de la condición del delincuente?, o por el contrario, ¿existe alguna relación entre el tipo de delito con respecto al quien comete el acto? Se asumen un nivel de significancia de 5%.
 
+Para este caso se plantea una prueba de independencia con las siguientes hipótesis:
+
+\(H_{0}:\):| El tipo de delito es independiente de la condición del delincuente
+
+\(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delicuente
+
+
+
+Para las pruebas de independencia se utilizará la función chisq.test
+
+Su sintaxis es:
+
+          chisq.test(matrix(c(valores matriz), tamaño matriz))
+
+
+
+
+Y se procede a utilizar la función chisq.test con los respectivos valores de la matriz que se presentó al inicio y su tamaño el cual es 2x3 (2 filas y 3 columnas)
+
+```{r}
+
+chisq.test(matrix(c(12,379,727,39,106,642),2,3,byrow = TRUE))
+
+```
+
+
 **Resumen de la prueba**
+
 
 | Dato| Valor|
 |:--|:--|
-| Tipo de prueba a utilizar| Valor|
-| Valor observado| Valor|
-| Grados de libertad y qué representan| Valor|
-| Valor P| Valor|
-| $H_{0}$| Valor|
-| $H_{1}$| Valor|
+| Tipo de prueba:| Independencia|
+| Valor observado| 119.33|
+| Grados de libertad| 2,  representan el total de filas -1 multiplicado por el total de columnas -1|                 
+| Valor P|   2.2e-16|               
+| \(H_{0}:\):| El tipo de delito es independiente de la condición del delincuente|       
+| \(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delicuente|
+
 
 **Conclusión**
+
+Se cuenta con sufuciente evidencia para rechazar \(H_{0}\) ya que el valor p es muy cercano a 0, por lo tanto no se puede aceptar independencia del tipo de delito con respecto a la condición del delincuente
+
 
 ## Caso 4:
 
@@ -1539,24 +1570,94 @@ A una de las medidas utilizadas para cuantificar el impacto del choque sobre el 
 
 Con los datos anteriores, ¿es posible considerar que el tamaño del automóvil puede variar en cuanto a la seguridad de sus pasajeros o por el contrario, es igualmente riesgoso? Se asume un nivel de significancia del 5%.
 
+
+Para este caso se plantean las siguientes hipótesis:
+
+Sea:
+
+X: las unidades de fuerza de gravedad para cuantificar el impacto del choque (Variable cuantitiativa)
+
+Y: tipos de autos utilizados en las pruebas de choque (Variable cualitativa)
+
+μ1,μ2 y μ3 respectivamente las unidades de fuerza de gravedad promedio en los choques de cada tipo de auto.
+
+\(H_{0}:\):μ1=μ2=μ3.
+
+\(H_{1}:\): al menos dos de las medias no son iguales.
+
+
+Creamos un archivo csv con los datos de la tabla anterior y lo cargamos en la variable "datos" 
+
+```{r}
+library(readr)
+
+datos <- read.csv("caso4.csv", sep = ";") 
+head(datos, 5)
+
+```
+
+
+Aplicamos la prueba de varianza con la funcion aov y datos del csv (el summary es para hacer un resumen de los resultados):
+
+```{r}
+summary(aov(gravedad ~ autos, data = datos))
+```
+
+
+
 **Resumen de la prueba**
+
 
 | Dato| Valor|
 |:--|:--|
-| Tipo de prueba a utilizar| Valor|
-| Valor observado| Valor|
-| Grados de libertad y qué representan| Valor|
-| SSE| Valor|
-| SSA| Valor|
-| SST| Valor|
-| $S_{1}^{2}$ y $S_{2}^{2}$| Valor|
-| Valor P| Valor|
-| $H_{0}$| Valor|
-| $H_{1}$| Valor|
+| Tipo de prueba:| ANOVA|
+| Valor observado| 3.552|
+| Grados de libertad autos| 2,  cantidad de tipos de autos - 1|  
+| Grados de libertad residuals| 24,  representan el total de filas(datos de fuerza de gravedad) -1 |  
+| SSE| 535.6|
+| SSA| 158.5|
+| SST| 694.1|
+| S1| 79.26|
+| S2| 22.31|
+| Valor P|   0.0445|               
+| \(H_{0}:\):| μ1=μ2=μ3|       
+| \(H_{1}:\):| al menos dos de las medias no son iguales|
+
 
 **Conclusión**
 
-En caso de detectar alguna diferencia en cuanto a la seguridad que puede brindar al tamaño del vehículo, ¿es posible en cuáles existe una verdadera diferencia significativa?
+En esta prueba el p-valor está dado por el resultado Pr(>F), que en este caso al ser menor que α, se rechaza la hipótesis nula, la cual indica que μ1,μ2 y μ3 son iguales, por lo que si es posible asegurar que el tamaño del automovil puede variar en cuanto a la seguridad de sus pasajeros
+
+
+**4.2**
+
+Para decir en cuáles tipos de autos existe una verdadera diferencia significativa realizaremos una prueba Tuckey
+
+Para despejar esta duda, se recomienda utilizar la prueba Tuckey que permite calcular la diferencia de impacto de cada valor en cada variable independiente. La prueba Tuckey la realizamos de la siguiente manera:
+
+
+```{r}
+# Almacenamos la prueba de ANOVA en una nueva variable
+AnovaCaso4 <- aov(gravedad ~ autos, data = datos)
+
+#Pasamo la prueba ANOVa a la prueba Tuckey
+TukeyHSD(AnovaCaso4)
+```
+Del resumen anterior, debe comprenderse lo siguiente:
+
+diff: corresponde a la resta de los promedios muestrales entre las dos categorías comparadas
+
+lwr: extremo izquierdo del IC
+
+upr: extremo derecho del IC
+
+p adj: valorP ajustado (para efectos prácticos, el valor P de la prueba)
+
+
+**Conclusion**
+
+La prueba muestra que hay una diferencia significativa entre autos  "grandes" y "compactos" donde valorP=0.0351275 < α=0.05, no así en el resto de comparaciones. 
+
 
 # V Parte: Modelos de regresión lineal
 
