@@ -1260,9 +1260,9 @@ boys.feets <- feetsplit$B
 girls.feets <- feetsplit$G
 ```
 
-1. Gráficos
+### 1. Gráficos.
 
-Debido a que los tamaños de las muestras de los niños es de 20 y el de las niñas de 19, se pueden crear distinas gráficas para determinar si dicha muestra sigue una distribución normal.A continuación se presentan los gráficos de densidad 
+Debido a que los tamaños de las muestras de los niños y niñas son de 20 y 19 respectivamente, se pueden crear distintas gráficas para determinar si dicha muestra sigue una distribución normal. A continuación, se presentan los gráficos de densidad.
 
 ```{r}
 ggdensity(
@@ -1290,7 +1290,7 @@ mean(girls.feets)
 Como se puede observar, probablemente exista normalidad en ambas muestras de datos, ya que parece ser que la gráfica tiene forma de campana, además, en ambos casos la punta de la gráfica se encuentra muy cerca de la media.
 
 
-2. Gráfico QQ-plot
+### 2. Gráfico QQ-plot.
 
 A continuación se presentan los gráficos de QQ-plot;
 
@@ -1305,7 +1305,7 @@ qqline(girls.feets)
 
 En ambos casos, parece ser que el conjunto de datos no parece seguir una distribución normal, especialmente cerca de las colas.
 
-3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+### 3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test.
 
 **Test de Shapito-Wilks o S-W test**
 
@@ -1316,6 +1316,7 @@ boys.sw
 girls.sw <- shapiro.test(girls.feets)
 girls.sw
 ```
+
 Para ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
 
 **Test de normalidad de Anderson-Darling o A-D test**
@@ -1327,6 +1328,7 @@ boys.ad
 girls.ad <- ad.test(girls.feets)
 girls.ad
 ```
+
 En ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
 
 **Test de Kolmogorov-Smirnov-Lilliefors o K-S-L test**
@@ -1338,22 +1340,24 @@ boys.ksl
 girls.ksl <- lillie.test(girls.feets)
 girls.ksl
 ```
+
 En ambos casos, no se encontró evidencia en contra para asumir normalidad, debido a que el valor p es mayor que el nivel de significancia (0.05).
 
-4. D'Agostino-Pearson
+### 4. D'Agostino-Pearson.
 
-Para realizar esta prueba, es necesario saber que el tamaño de la muestra obligatoriamente debe de ser de tamaño 20 o superior, por ende, no es posible realizar la prueba para el caso del tamaño de las niñas debido a que dicha muestra es de tamaño 19. Sabiendo esto, se procede a realizar la prueba para el tamaño de la muestra en general y luego para la muestra de los niños:
+Para realizar esta prueba, es necesario saber que el tamaño de la muestra obligatoriamente debe ser 20 o superior, por ende, no es posible realizar la prueba para el caso del tamaño de las niñas debido a que dicha muestra es de tamaño 19. Sabiendo esto, se procede a realizar la prueba para el tamaño de la muestra en general y luego para la muestra de los niños:
 
 ```{r}
 dagoTest(KidsFeet$length)
 boys.dap <- dagoTest(boys.feets)
 boys.dap
 ```
+
 No se encontró evidencia en contra para asumir normalidad, debido a que el valor p general (Omnibus) es mayor que el nivel de significancia (0.05).
 
-5. Análisis de custoris y simetría de los datos
+### 5. Análisis de custoris y simetría de los datos.
 
-A continuación se mostrarán los análisis de custoris en niños y niñas para el tamaño de la planta del pie:
+A continuación, se mostrarán los análisis de custoris en niños y niñas para el tamaño de la planta del pie:
 
 ```{r}
 boys.kurtosis <- moments::kurtosis(boys.feets) # curtosis en niños
@@ -1377,7 +1381,6 @@ girls.skewness
 
 De la simetría se puede concluir que ambas gráficas son simétricas, aunque en el caso de los niños, al ser positivo, su media está un poco más inclinada hacia la izquierda, y en las niñas ocurre lo contrario, al ser negativo pero acercándose a 0, su media está ligeramente más inclinada hacia la derecha.
 
-
 ## Caso 2:
 
 Para este caso se utilizará la base de datos medidas_cuerpo de la siguiente url:
@@ -1394,9 +1397,9 @@ biceps <- body$biceps
 str(biceps)
 ```
 
-1. Gráficos
+### 1. Gráficos.
 
-A continuación se presentan los gráficos de densidad para el tamaño de los biceps:
+A continuación, se presentan los gráficos de densidad para el tamaño de los bíceps:
 
 ```{r}
 ggdensity(
@@ -1408,9 +1411,9 @@ ggdensity(
 
 Se puede observar que la gráfica no tiene forma de campana y cerca de la media no existe un punto máximo, por lo que se concluye que dicha muestra no sigue una distribución normal.
 
-2. Gráfico QQ-plot
+### 2. Gráfico QQ-plot.
 
-A continuación se presentan los gráficos de QQ-plot, es importante saber que se utilizarán las edades para que así el gráfico del tamaño de los biceps tenga sentido:
+A continuación, se presentan los gráficos de QQ-plot, es importante saber que se utilizarán las edades para que así el gráfico del tamaño de los bíceps tenga sentido:
 
 ```{r}
 #qqplot(biceps, body$edad, xlab = "Tamaño de los biceps", ylab = "Edad de la persona", main = "Gráfico QQ Plot de los biceps")
@@ -1420,7 +1423,7 @@ qqline(biceps)
 
 Se puede observar que el conjunto de datos no parece seguir una distribución normal, especialmente en las colas y en el centro de la gráfica.
 
-3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test
+### 3. Pruebas formales de normalidad S-W test, A-D test, K-S-L test.
 
 **Test de Shapito-Wilks o S-W test**
 
@@ -1437,6 +1440,7 @@ Se encontró evidencia en contra para asumir normalidad, debido a que el valor p
 biceps.ad <- ad.test(biceps)
 biceps.ad
 ```
+
 Se encontró evidencia en contra para asumir normalidad, debido a que el valor p es menor que el nivel de significancia de 0.05.
 
 **Test de Kolmogorov-Smirnov-Lilliefors o K-S-L test**
@@ -1445,19 +1449,21 @@ Se encontró evidencia en contra para asumir normalidad, debido a que el valor p
 biceps.ksl <- lillie.test(biceps)
 biceps.ksl
 ```
+
 Se encontró evidencia en contra para asumir normalidad, debido a que el valor p es menor que el nivel de significancia de 0.05.
 
-4. D'Agostino-Pearson
+### 4. D'Agostino-Pearson.
 
 ```{r}
 biceps.dap <- dagoTest(biceps)
 biceps.dap
 ```
+
 Se encontró evidencia en contra para asumir normalidad, debido a que el valor p general (Omnibus) es menor que el nivel de significancia de 0.05.
 
-5. Análisis de custoris y simetría de los datos
+### 5. Análisis de custoris y simetría de los datos
 
-A continuación se mostrarán el análisis de custoris para el tamaño de los biceps:
+A continuación, se mostrarán el análisis de custoris para el tamaño de los bíceps:
 
 ```{r}
 biceps.kurtosis <- moments::kurtosis(biceps) # curtosis de los biceps
@@ -1466,22 +1472,22 @@ biceps.kurtosis
 
 Como se puede observar, el resultado fue mayor a cero, por lo que se puede concluir que tiende a ser leptocúrtica, es decir, su campana es alargada y muy punteada, con unas colas muy bajas.
 
-A continuación se mostrará el análisis de simetría para el tamaño de los biceps:
+A continuación, se mostrará el análisis de simetría para el tamaño de los bíceps:
 
 ```{r}
 biceps.skewness <- moments::skewness(biceps) # simetria en medida de biceps
 biceps.skewness
 ```
 
-De la simetría se puede concluir la gráficas es simétrica, aunque, al ser positivo, su media está un poco más inclinada hacia la izquierda.
+De la simetría se puede concluir que la gráfica es simétrica, aunque, al ser positivo, su media está un poco más inclinada hacia la izquierda.
 
 ## Resumen casos 1 y 2
 
-| Tipo de prueba| Niños| Niñas| Medidas de biceps|
+| Tipo de prueba| Niños| Niñas| Medidas de bíceps|
 |:--|:--|:--|:--|
 | Función de densidad versus curva normal| Parece tener forma de campana| Parece tener forma de campana| No tiene forma de campana|
 | Conclusión| Se concluye que sigue una dist. normal| Se concluye que sigue una dist. normal| Se concluye que no sigue una dist. normal|
-| QQ-Plot| En las colas y el centro de la gráfica los datos están más alejados de la linea.| En las colas y el centro de la gráfica los datos están más alejados de la linea.| En las colas y el centro de la gráfica los datos están más alejados de la linea.|
+| QQ-Plot| En las colas y el centro de la gráfica los datos están más alejados de la línea.| En las colas y el centro de la gráfica los datos están más alejados de la línea.| En las colas y el centro de la gráfica los datos están más alejados de la línea.|
 | Conclusión| No parece seguir una distribución normal| No parece seguir una distribución normal| No parece seguir una distribución normal|
 | S-W test| Valor P=`r round(boys.sw$p.value, 4)`| Valor P=`r round(girls.sw$p.value, 4)`| Valor P=`r round(biceps.sw$p.value, 4)`|
 | Conclusión| Se asume normalidad; valor p > 0.05 (significancia)| Se asume normalidad; valor p > 0.05 (significancia)| NO se asume normalidad; valor p < 0.05 (significancia)|
@@ -1502,13 +1508,13 @@ La siguiente tabla resume los datos de obtenidos de víctimas de crímenes elegi
 | **El criminal era un extraño**| 12| 379| 727|
 | **El criminal era un conocido o pariente**| 39| 106| 642|
 
-Con los datos anteriores, ¿sería posible considerarque el tipo de delito es independiente de la condición del delincuente?, o por el contrario, ¿existe alguna relación entre el tipo de delito con respecto al quien comete el acto? Se asumen un nivel de significancia de 5%.
+Con los datos anteriores, ¿sería posible considerar que el tipo de delito es independiente de la condición del delincuente?, o por el contrario, ¿existe alguna relación entre el tipo de delito con respecto al quien comete el acto? Se asumen un nivel de significancia de 5%.
 
 Para este caso se plantea una prueba de independencia con las siguientes hipótesis:
 
 \(H_{0}:\):| El tipo de delito es independiente de la condición del delincuente
 
-\(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delicuente
+\(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delincuente
 
 
 
@@ -1540,13 +1546,12 @@ chisq.test(matrix(c(12,379,727,39,106,642),2,3,byrow = TRUE))
 | Grados de libertad| 2,  representan el total de filas -1 multiplicado por el total de columnas -1|                 
 | Valor P|   2.2e-16|               
 | \(H_{0}:\):| El tipo de delito es independiente de la condición del delincuente|       
-| \(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delicuente|
+| \(H_{1}:\):| No existe independencia entre el tipo de delito y la condición del delincuente|
 
 
 **Conclusión**
 
-Se cuenta con sufuciente evidencia para rechazar \(H_{0}\) ya que el valor p es muy cercano a 0, por lo tanto no se puede aceptar independencia del tipo de delito con respecto a la condición del delincuente
-
+Se cuenta con suficiente evidencia para rechazar \(H_{0}\) ya que el valor p es muy cercano a 0, por lo tanto, no se puede aceptar independencia del tipo de delito con respecto a la condición del delincuente
 
 ## Caso 4:
 
@@ -1575,13 +1580,13 @@ Para este caso se plantean las siguientes hipótesis:
 
 Sea:
 
-X: las unidades de fuerza de gravedad para cuantificar el impacto del choque (Variable cuantitiativa)
+X: las unidades de fuerza de gravedad para cuantificar el impacto del choque (Variable cuantitativa)
 
 Y: tipos de autos utilizados en las pruebas de choque (Variable cualitativa)
 
-μ1,μ2 y μ3 respectivamente las unidades de fuerza de gravedad promedio en los choques de cada tipo de auto.
+μ1, μ2 y μ3 respectivamente las unidades de fuerza de gravedad promedio en los choques de cada tipo de auto.
 
-\(H_{0}:\):μ1=μ2=μ3.
+\(H_{0}:\): μ1=μ2=μ3.
 
 \(H_{1}:\): al menos dos de las medias no son iguales.
 
@@ -1593,11 +1598,10 @@ library(readr)
 
 datos <- read.csv("caso4.csv", sep = ";") 
 head(datos, 5)
-
 ```
 
 
-Aplicamos la prueba de varianza con la funcion aov y datos del csv (el summary es para hacer un resumen de los resultados):
+Aplicamos la prueba de varianza con la función aov y datos del csv (el summary es para hacer un resumen de los resultados):
 
 ```{r}
 summary(aov(gravedad ~ autos, data = datos))
@@ -1626,7 +1630,7 @@ summary(aov(gravedad ~ autos, data = datos))
 
 **Conclusión**
 
-En esta prueba el p-valor está dado por el resultado Pr(>F), que en este caso al ser menor que α, se rechaza la hipótesis nula, la cual indica que μ1,μ2 y μ3 son iguales, por lo que si es posible asegurar que el tamaño del automovil puede variar en cuanto a la seguridad de sus pasajeros
+En esta prueba el p-valor está dado por el resultado Pr(>F), que en este caso al ser menor que α, se rechaza la hipótesis nula, la cual indica que μ1, μ2 y μ3 son iguales, por lo que si es posible asegurar que el tamaño del automóvil puede variar en cuanto a la seguridad de sus pasajeros
 
 
 **4.2**
@@ -1643,6 +1647,7 @@ AnovaCaso4 <- aov(gravedad ~ autos, data = datos)
 #Pasamo la prueba ANOVa a la prueba Tuckey
 TukeyHSD(AnovaCaso4)
 ```
+
 Del resumen anterior, debe comprenderse lo siguiente:
 
 diff: corresponde a la resta de los promedios muestrales entre las dos categorías comparadas
@@ -1651,19 +1656,18 @@ lwr: extremo izquierdo del IC
 
 upr: extremo derecho del IC
 
-p adj: valorP ajustado (para efectos prácticos, el valor P de la prueba)
+p adj: valor P ajustado (para efectos prácticos, el valor P de la prueba)
 
 
-**Conclusion**
+**Conclusión**
 
-La prueba muestra que hay una diferencia significativa entre autos  "grandes" y "compactos" donde valorP=0.0351275 < α=0.05, no así en el resto de comparaciones. 
-
+La prueba muestra que hay una diferencia significativa entre autos "grandes" y "compactos" donde valor P=0.0351275 < α = 0.05, no así en el resto de comparaciones. 
 
 # V Parte: Modelos de regresión lineal
 
 ## Caso 5:
 
-Primeramente se cargan los datos de **EdadPesoGrasas.txt** como se muestra a continuación:
+Primeramente, se cargan los datos de **EdadPesoGrasas.txt** como se muestra a continuación:
 
 ```{r}
 grasas <- read.table('http://verso.mat.uam.es/~joser.berrendero/datos/Eda
@@ -1672,7 +1676,7 @@ dPesoGrasas.txt', header = TRUE)
 
 Con estos datos se proceden a realizar los siguientes puntos de un análisis de regresión lineal:
 
-### 1. Analisis de correlación entre todas la variables.
+### 1. Análisis de correlación entre todas la variables.
 
 Para esto se hace uso de la función cor del paquete stats de R, con la cual se puede resumir de manera muy sencilla todos los posibles casos de correlación en una matriz:
 
@@ -1689,9 +1693,9 @@ corrplot(c)
 
 De este gráfico se puede observar que conforme los datos están más lejos 0 los cículos son más grandes, esto indica que existe una correlación entre las variables. En caso de que el color sea azul significa que es una correlación positiva y si es rojo es una correlación negativa. Por ejemplo en el caso de las variables edad y grasas se tiene que hay correlación positiva que indica que el aumento de una se debe en gran parte debido a la otra.
 
-### 2. Genración de modelo RLS de mejor ajuste para dos variables con mayor coeficiente de correlación
+### 2. Generación de modelo RLS de mejor ajuste para dos variables con mayor coeficiente de correlación
 
-Para este punto se hará uso de la variables edad y grasas que fueron las que tuvieron un mayor coeficiente de variación según los datos del punto anterior.
+Para este punto se hará uso de las variables edad y grasas que fueron las que tuvieron un mayor coeficiente de variación según los datos del punto anterior.
 
 De esto se tiene que grasas será la variable Y de respuesta y que edad será la la variable X explicativa. A partir de estos datos se procede a generar el RLS haciendo uso de la función lm del paquete stats de R
 
@@ -1704,7 +1708,7 @@ De esto se tiene que el modelo de RLS sería grasas = 102.575 + 5.321*edad
 
 ### 3. Análisis de la calidad del modelo generado
 
-Para esto se hará uso del coeficiente de correlación y el coeficiente de determinación. Se utilizará la función summary para extraer el parámetro r.squared del modelo cálculado previamente y posteriormente se hará el análisis de los coeficientes.
+Para esto se hará uso del coeficiente de correlación y el coeficiente de determinación. Se utilizará la función summary para extraer el parámetro r.squared del modelo calculado previamente y posteriormente se hará el análisis de los coeficientes.
 
 ```{r}
 ## Cálculo del coeficiente de determinación
@@ -1746,7 +1750,7 @@ Como el valor P es grande, no existe evidencia suficiente para rechazar la norma
 
 ### 6. Intervalo de confianza de 95% para los coeficientes del modelo
 
-Con el objetivo de hallar los IC de los parametos $\beta_0$ y $\beta_1$, se hace uso de la función confint del paquete stats:
+Con el objetivo de hallar los IC de los parámetros $\beta_0$ y $\beta_1$, se hace uso de la función confint del paquete stats:
 
 ```{r}
 confint(modelo,level = 0.95)
@@ -1783,7 +1787,7 @@ Primero se tiene las siguientes hipótesis:
 * $H_0: \beta=0$ (no hay linealidad)
 * $H_1: \beta≠0$
 
-Para probar la siguiente hipótesis se hará uso de de la función summary, esto con el obtener un resumen de los datos del modelo.
+Para probar la siguiente hipótesis se hará uso de la función summary, esto con el obtener un resumen de los datos del modelo.
 
 ```{r}
 summary(modelo)
@@ -1792,78 +1796,100 @@ summary(modelo)
 Como en la pendiente el valor P es menor a 0.05 se rechaza $H_0$ por lo que se puede asumir que la pendiente es distinta de 0 lo que significa que hay linealidad y que hay dependencia lineal entre las variables grasas y edad.
 
 ## Caso 6:
-Primero se carga los datos del documento DatosVentas.csv
+
+Supóngase que el departamento de ventas de una empresa quiere estudiar la influencia 
+que tiene la publicidad a través de distintos medios de comunicación, sobre el número 
+de ventas de un producto. Se dispone de un conjunto de datos que contiene los ingresos 
+(en millones) conseguido por ventas en 200 regiones, así como la cantidad de 
+presupuesto, también en millones, destinado a anuncios por radio, TV y periódicos en 
+cada una de ellas.
+
+En primer lugar, se cargan los datos del documento DatosVentas.csv
+
 ```{r}
 ventasdb <- read.csv("DatosVentas.csv", header = TRUE)
-ventasdb
 ```
 
-**Generación de los modelos**
+### Generación de los modelos.
 
-##Regresion Lineal Simple
+### 1. Regresión lineal simple.
 
-#1
-Se crea un modelo con la variable  y = ventas y x = tv 
+En primer lugar, se creará un modelo con las siguientes variables y = ventas y x = tv
+
 ```{r}
 mod0 <- lm(ventas ~ tv, data = ventasdb)
 mod0
 ```
-Tras generar el modelo optenemos la ecuación:
+
+Tras generar el modelo se obtiene la ecuación:
 
 ventas = 7.03259 + 0.04754 * tv
 
-##Regresion Lineal Multiple
+### 2. Primer modelo de regresión lineal múltiple.
 
-#2
-Se crea un modelo con la variable  y = ventas, x1 = tv, x2 = radio y x3 = periodico
+Para este punto se crea un modelo con las siguientes variables: y = ventas, x1 = tv, x2 = radio y x3 = periódico.
+
 ```{r}
 mod1 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio+ventasdb$periodico)
 ```
-Tras generar el modelo optenemos la ecuación:
 
-ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico
+Y se tiene que la ecuación de este es:
+
+ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periódico
+
+Posteriormente se procede a hacer un resumen con el objetivo de poder identificar los coeficientes que sean significativos para el modelo:
 
 ```{r}
 summary(mod1)
 ```
 
-Tras optener los coeficientes y realizar el summery al modelo podemos concluir que los que aportan o son significantes para a modelo son los de la variable tv, radio y el intercepto, mientras que la varible de periodico no es significativa para el modelo.
+Tras obtener los coeficientes y realizar un summary al modelo podemos concluir que los que aportan o son significantes para a modelo son los de la variable tv, radio y el intercepto, mientras que la variable periódico no es significativa para el modelo.
 
-#3
-Se crea un nueco modelo con las variables significativas variable  y = ventas y x1 = tv y x2 = radio
+### 3. Segundo modelo de regresión lineal múltiple.
+
+En este punto se crea un nuevo modelo con las variables significativas. En este caso: y = ventas y x1 = tv y x2 = radio
+
 ```{r}
 mod2 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio)
 mod2
 ```
-Tras generar el modelo optenemos la ecuación:
+
+De esto se obtiene la ecuación:
 
 ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio
+
+Y luego se vuelve a realizar un summary con el objetivo de ver si las variables son significativas.
 
 ```{r}
 summary(mod2)
 ```
 
+En este caso tras realizar el summary del modelo, podemos ver todas las variables son significativas para el modelo.
 
-En este caso tras realizar el summary de el modelo, podemos ver todas las variables son significativas para el modelo.
+### 4. Modelo de regresión no lineal múltiple.
 
-#4
+Utilizando los mismos datos se procede a realizar un RNLM.
+
 ```{r}
-
 mod3 <- lm(ventasdb$ventas ~ ventasdb$tv + ventasdb$radio + (ventasdb$tv*ventasdb$radio))
 mod3
 ```
-Tras generar el modelo optenemos la ecuación:
+
+Y se obtiene la ecuación:
 
 ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)
+
+Y se verifica si las variables son significativas:
 
 ```{r}
 summary(mod3)
 ```
 
+Tras obtener los resultados y realizar el summary podemos ver que todos los coeficientes obtenidos son significativos y aportan al modelo.
 
-Tras optener los resultados y realizar el summary podemos ver que todos los coeficientes obtenidos son significativos y aportan al modelo.
+### Seleccionando el mejor modelo.
 
-**Seleccionando el mejor modelo**
+Para esta sección, se pretende seleccionar el mejor modelo entre los 4 ya generados en la I Parte de esta prueba.
 
 ```{r}
 ## Cálculo del coeficiente de determinación mod0
@@ -1893,8 +1919,9 @@ cd3 <- summary(lm(mod3))$r.squared
 cc3 <- sqrt(summary(mod3)$r.squared)
 ```
 
-#1
-A continuación se muestra una grafica con los datos resumidos de los coeficiente de correlación de todos los modelos asi como coeficiente de determinación.
+### 1. Comparación de coeficiente de relación y determinación de los modelos.
+
+A continuación, se muestra una gráfica con los datos resumidos de los coeficiente de correlación de todos los modelos así como los coeficientes de determinación.
 
 | Ecuación del modelo| Coeficiente de correlación| Coeficiente de determinación|
 |:--|:--|:--|
@@ -1903,43 +1930,60 @@ A continuación se muestra una grafica con los datos resumidos de los coeficient
 | ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio| `r cc2`| `r cd2`|
 | ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)| `r cc3`| `r cd3`|
 
-#2
-Se tiene que para el modelo mod2 $R =$ `r cc2`, esto significa que la correlación lineal entre las ventas y tv, radio es positiva y moderada. Por otra parte, se tiene que $R^{2} =$ `r cd2`, de esto se interpreta que el 94.72% de variación en las venta se debe a la tv, radio y el restante 7.28% es por otros factores.
+### 2. Interpretación de los coeficientes del modelo 2.
 
-#3
+Se tiene que para el modelo mod2 $R =$ `r cc2`, esto significa que la correlación lineal entre las ventas y tv, radio es positiva y moderada. Por otra parte, se tiene que $R^{2} =$ `r cd2`, de esto se interpreta que el 94.72% de variación en las ventas se debe a la tv, radio y el restante 7.28% es por otros factores.
+
+### 3. Comparación mediante valores AIC.
+
+Se utilizará la función AICctab con el fin organizar los modelos de mejor a peor.
+
 ```{r}
 AICctab(mod0, mod1, mod2, mod3, base = T, delta = T, sort = T, weights = T, nobs = ncol(ventasdb))
-
 ```
-Como podemos ver tras ejecutar la funcion el mejor modelo corresponde al mod3 con un puntaje de 490.3, luego mod1 con 722.4 en tercer lugar mod0 con 1068.1 y por ultimo mod2 que tiene un Inf.
 
-#4
-Como primer paso creamos los Explain Model
+Como podemos ver tras ejecutar la función se pueden clasificar los modelos de mejor a peor de la siguiente forma:
+
+1. mod3 con un puntaje de 490.3.
+2. mod1 con un puntaje de 722.4
+3. mod0 con un puntaje de 1068.1 
+4. mod2 con un puntaje de Inf.
+
+### 4. Análisis de los residuales.
+
+Se tomarán solo los modelos mod0, mod2 y mod3 debido a que el modelo 1 y 2 resultaron ser similares. Luego como primer paso se crean los Explain Model.
+
 ```{r}
 exp_lm0 <- explain(mod0, data = ventasdb, label = "lm1", y = ventasdb$ventas)
 exp_lm2 <- explain(mod2, data = ventasdb, label = "lm2", y = ventasdb$ventas)
 exp_lm3 <- explain(mod3, data = ventasdb, label = "lm3", y = ventasdb$ventas)
 ```
 
-Como segundo paso creamos los Performance Model
+Como segundo paso se crean los Performance Model
+
 ```{r}
 lm0 <- model_performance(exp_lm0)
 lm2 <- model_performance(exp_lm2)
 lm3 <- model_performance(exp_lm3)
 ```
 
-Por ultimo graficamos los modelos
+Y por último se grafican los modelos
+
 ```{r}
 plot(lm0,lm2, lm3)
 ```
-Como podemos ver en el gráfico el mejor modelo el el mod3 ya que presenta la curva mas baja de la grafica, como segundo mejor modelo el mod2 y como peor modelo el mod1.
 
-#5
-Análisis de varianza
+Como podemos ver en el gráfico el mejor modelo es el mod3 ya que presenta la curva más baja de la gráfica, como segundo mejor modelo está mod2 y como peor modelo está mod1.
+
+### 5. Análisis de varianza
+
+Para este punto se realizará un análisis de los RSS de la función anova de R.
+
 ```{r}
 anova(mod1, mod2, mod3)
 ```
-Como podemos ver tras realizar la prueba de anova el resultado nos muestra nuevamente que el modelo mod3 es el mejor para utilizar en nuestras predicciones.
+
+Como conclusión, se puede observar que tras realizar la prueba de anova el resultado nos muestra nuevamente que el modelo mod3 es el mejor para utilizar en nuestras predicciones.
 
 # VI Parte: Modelos de regresión no lineal
 
@@ -1987,7 +2031,7 @@ Para este punto se hará un segundo modelo. Considerando que la gráfica tiene u
 
 ### 6. Linealización del segundo modelo.
 
-En está parte se hara una estimación de los parámetros $\alpha$ y $\beta$ a través de un proceso de lineación a partir de un modelo RLS, para esto se hara uso una vez más de la función lm haciendo la sistitución de variables respectiva, que es la siguiente:
+En esta parte se hará una estimación de los parámetros $\alpha$ y $\beta$ a través de un proceso de linealización a partir de un modelo RLS, para esto se hará uso una vez más de la función lm haciendo la sustitución de variables respectiva, que es la siguiente:
 
 $X_2 = \frac{1}{X}$ y $Y_2 = \frac{1}{Y}$
 
@@ -2031,16 +2075,16 @@ xo <- seq(from = min(jaws$age) - 0.2, to = max(jaws$age) + 0.2, by = 0.01)
 yo <- xo / (0.007261 * xo + 0.053404)
 
 # Graficamos dispersión y el modelo de ajuste en un mismo plot
-plot(jaws$age, jaws$bone, main = "Modelo de RNLS f(x)=a(1- e^{-c x })", col = "darkblue", lwd = 2)
+plot(jaws$age, jaws$bone, main = "Modelo de RNLS f(x)=x/(0.007261x+0.053404)", col = "darkblue", lwd = 2)
 lines(xo, yo, type = "l")
 ```
 
 ### 9. Comparación de ambos modelos.
 
-En este punto se comparán ambos modelos con el fin de cuantificar cual es mejor, para esto se hara uso de la función anova del paquete stats de R.
+En este punto se compararán ambos modelos con el fin de cuantificar cual es mejor, para esto se hará uso de la función anova del paquete stats de R.
 
 ```{r}
 anova(modelo1, modelo2)
 ```
 
-En este caso bajo el criterio de análisis de varianzas el modelo 1 resulto ser el mejor ya que tiene un RSS menor. Sin embargo, esto parece no coincidir con la gráficas ya que parece ser que la gráfica del modelo 2 se ajusta mejor a los datos en comparación a la del modelo 1.
+En este caso bajo el criterio de análisis de varianzas el modelo 1 resulto ser el mejor ya que tiene un RSS menor. Sin embargo, esto parece no coincidir con las gráficas ya que parece ser que la gráfica del modelo 2 se ajusta mejor a los datos en comparación a la del modelo 1.
