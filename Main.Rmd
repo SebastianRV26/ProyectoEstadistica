@@ -1792,16 +1792,18 @@ summary(modelo)
 Como en la pendiente el valor P es menor a 0.05 se rechaza $H_0$ por lo que se puede asumir que la pendiente es distinta de 0 lo que significa que hay linealidad y que hay dependencia lineal entre las variables grasas y edad.
 
 ## Caso 6:
-
+Primero se carga los datos del documento DatosVentas.csv
 ```{r}
-ventasdb <- read.csv("DatosVentas.csv", , header = TRUE)
+ventasdb <- read.csv("DatosVentas.csv", header = TRUE)
 ventasdb
 ```
 
 **Generación de los modelos**
 
 ##Regresion Lineal Simple
+
 #1
+Se crea un modelo con la variable  y = ventas y x = tv 
 ```{r}
 mod0 <- lm(ventas ~ tv, data = ventasdb)
 mod0
@@ -1811,18 +1813,24 @@ Tras generar el modelo optenemos la ecuación:
 ventas = 7.03259 + 0.04754 * tv
 
 ##Regresion Lineal Multiple
+
 #2
+Se crea un modelo con la variable  y = ventas, x1 = tv, x2 = radio y x3 = periodico
 ```{r}
 mod1 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio+ventasdb$periodico)
-mod1
 ```
 Tras generar el modelo optenemos la ecuación:
 
 ventas = 2.938889 + 0.045765 * tv + 0.188530 * radio + -0.001037 * periodico
 
-Tras optener los coeficientes podemos concluir que los que aportan a modelo son los de la variable tv y radio ya que estos son positivos, en cambio el de periodico al ser negativo mas bien esta restando al modelo.
+```{r}
+summary(mod1)
+```
+
+Tras optener los coeficientes y realizar el summery al modelo podemos concluir que los que aportan o son significantes para a modelo son los de la variable tv, radio y el intercepto, mientras que la varible de periodico no es significativa para el modelo.
 
 #3
+Se crea un nueco modelo con las variables significativas variable  y = ventas y x1 = tv y x2 = radio
 ```{r}
 mod2 <- lm(ventasdb$ventas ~ ventasdb$tv+ventasdb$radio)
 mod2
@@ -1831,7 +1839,12 @@ Tras generar el modelo optenemos la ecuación:
 
 ventas = 2.92110 + 0.04575 * tv + 0.18799 * radio
 
-En este caso los coeficientes muestran que ambos son significativos, sin embargo el de tv es muy poco ya que es muy cercano al valor 0.
+```{r}
+summary(mod2)
+```
+
+
+En este caso tras realizar el summary de el modelo, podemos ver todas las variables son significativas para el modelo.
 
 #4
 ```{r}
@@ -1843,7 +1856,12 @@ Tras generar el modelo optenemos la ecuación:
 
 ventas = 6.750220 + 0.019101 * tv + 0.028860 * radio + 0.001086(tv*radio)
 
-Tras optener los resultados podemos ver que todos los coeficientes obtenidos son significativos ya que todos son positivos, siendo el menos significativo de todos el de tv * radio ya que es el mas cercano a 0
+```{r}
+summary(mod3)
+```
+
+
+Tras optener los resultados y realizar el summary podemos ver que todos los coeficientes obtenidos son significativos y aportan al modelo.
 
 **Seleccionando el mejor modelo**
 
@@ -1876,6 +1894,8 @@ cc3 <- sqrt(summary(mod3)$r.squared)
 ```
 
 #1
+A continuación se muestra una grafica con los datos resumidos de los coeficiente de correlación de todos los modelos asi como coeficiente de determinación.
+
 | Ecuación del modelo| Coeficiente de correlación| Coeficiente de determinación|
 |:--|:--|:--|
 | ventas = 7.03259 + 0.04754 * tv|`r cc0` | `r cd0`|
@@ -1912,14 +1932,14 @@ Por ultimo graficamos los modelos
 ```{r}
 plot(lm0,lm2, lm3)
 ```
-Como podemos ver en el gráfico el mejor modelo el el mod3 ya que presenta la curva mas baja de la grafica, como segundo mejor modelo el mod2 y como peor modelo el mod1, este criterio tiene sentido ya que ......... terminar
+Como podemos ver en el gráfico el mejor modelo el el mod3 ya que presenta la curva mas baja de la grafica, como segundo mejor modelo el mod2 y como peor modelo el mod1.
 
 #5
 Análisis de varianza
 ```{r}
-anova(mod0,mod1, mod2, mod3)
+anova(mod1, mod2, mod3)
 ```
-
+Como podemos ver tras realizar la prueba de anova el resultado nos muestra nuevamente que el modelo mod3 es el mejor para utilizar en nuestras predicciones.
 
 # VI Parte: Modelos de regresión no lineal
 
