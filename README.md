@@ -1,5 +1,22 @@
 # ProyectoEstadistica
 
+El proyecto es el archivo llamado Main.docx y el código se encuentra en el archivo Main.Rmd.
+
+### Notas
+
+* Para realizar el proyecto fue necesario instalar el lenguaje R, el editor RStudio y Rtools.
+
+* Para instalar algún paquete se utiliza la siguiente línea de código: 
+```
+install.packages("nombre del paquete", dependencies = T)
+```
+
+* En caso de tener problemas con la instalación del paquete stests ejecutar el siguiente chunk:
+```
+if (!require('devtools')) install.packages('devtools')
+devtools::install_github('fhernanb/stests', force=TRUE)
+```
+
 ### I Parte: 
 
 Descripción general det dataset tilizado (Diamantes de datos) y se presenta que no tiene columnas vacías.
@@ -26,21 +43,6 @@ Se presentan 4 casos relacionados con pruebas de hipótesis de bondad de ajuste,
 ### V Parte: Modelos de regresión lineal
 
 En esta sección se analizan 3 casos relacionados con los modelos de Regresión Lineal Simple (RLS) y múltiple (RLM), así como los modelos de Regresión no Lineal Simple (RNLS).
-
-### Notas
-
-* Para realizar el proyecto fue necesario instalar el lenguaje R, el editor RStudio y Rtools.
-
-* Para instalar algún paquete se utiliza la siguiente línea de código: 
-```
-install.packages("nombre del paquete", dependencies = T)
-```
-
-* En caso de tener problemas con la instalación del paquete stests ejecutar el siguiente chunk:
-```
-if (!require('devtools')) install.packages('devtools')
-devtools::install_github('fhernanb/stests', force=TRUE)
-```
 
 ## Integrantes:
 * [Francisco Soto Quesada](https://github.com/franrsq)
